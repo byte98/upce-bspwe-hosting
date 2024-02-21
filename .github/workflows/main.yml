@@ -61,4 +61,15 @@ jobs:
           asset_path: CONFIG/web.conf.d
           asset_name: web.conf.d
           asset_content_type: text/plain
+      
+      - name: Upload DNS Configuration File Asset
+        id: upload-dns-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CONFIG/named.conf.d
+          asset_name: named.conf.d
+          asset_content_type: text/plain
         
