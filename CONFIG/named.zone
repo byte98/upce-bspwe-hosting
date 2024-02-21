@@ -1,0 +1,11 @@
+$TTL 86400
+@   IN  SOA     ns1.${domain}.   admin.${name}. (
+                2022022101 ; Serial
+                3600       ; Refresh
+                1800       ; Retry
+                604800     ; Expire
+                86400 )    ; Minimum TTL
+
+@       IN  NS      ns1.${domain}.
+@       IN  A       ${ip}
+www     IN  A       ${ip}
