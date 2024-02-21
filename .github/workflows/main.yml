@@ -2,7 +2,7 @@ name: Generate release
 on:
   push:
     branches: 
-      -master
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
