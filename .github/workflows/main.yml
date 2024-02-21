@@ -31,20 +31,34 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Zip File Asset
+        id: upload-zip-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: |
-            "simple_hosting.zip"
-            "CONFIG/web.conf.d"
-            "CONFIG/root.conf.d"
-          asset_name: |
-            "simple_hosting.zip"
-            "web.conf.d"
-            "root.conf.d"
+          asset_path: simple_hosting.zip
+          asset_name: simple_hosting.zip
           asset_content_type: application/zip
+      - name: Upload Root Web Configuration File Asset
+        id: upload-root-web-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CONFIG/root.conf.d
+          asset_name: root.conf.d
+          asset_content_type: text/plain
+      - name: Upload Client Web Configuration File Asset
+        id: upload-client-web-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CONFIG/web.conf.d
+          asset_name: web.conf.d
+          asset_content_type: text/plain
         
