@@ -1,0 +1,40 @@
+name: Generate release
+on:
+  push:
+    branches: 
+      -master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Create ZIP
+        run: zip -r release.zip * -x INSTALLER/**
+
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: your_archive_name
+          path: your_archive_name.zip
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+  
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: your_archive_name.zip
+          asset_name: your_archive_name.zip
+          asset_content_type: application/zip
+        
