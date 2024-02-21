@@ -1,0 +1,3 @@
+[submodule "INSTALLER"]
+	path = INSTALLER
+	url = git@github.com:byte98/upce-bspwe-hosting-installer.git
