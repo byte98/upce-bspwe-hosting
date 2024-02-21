@@ -38,7 +38,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: simple_hosting.zip
-          asset_name: simple_hosting.zip
+          asset_path: |
+            simple_hosting.zip
+            CONFIG/web.conf.d
+            CONFIG/root.conf.d
+          asset_name: |
+            simple_hosting.zip
+            web.conf.d
+            root.conf.d
           asset_content_type: application/zip
         
