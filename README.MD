@@ -25,15 +25,39 @@ This application comes with quite helpful installer. Installer can be downloaded
 Unzip downloaded file and then continue. There are seweral ways how to run installer.
 
 - **Windows**
-    - Locate the file **install.ps1**
-    - Right click
-    - Run with PowerShell
+    1. Locate the file **install.ps1**
+    2. Right click
+    3 Run with PowerShell
 - **Linux**
-    - Run following command:
+    1. Run following command:
         ```
             pwsh /path/to/installer/install.ps1
         ```
 Installer leads you through the whole installation process. It requires some additional information and could take some time, so be patient. In some cases, installer will lead you through steps, which installer cannot do itself. For these cases, be prepared to connect to the server and follow commands given by installer.
+
+### 3. Post-installation
+If you want to test hosting service on your local environment, then you need to slightly modify your network settings. Luckily, only thing, which needs modification, is DNS settings. On your machine, add address of server as the first entry in DNS servers list. Following guide expects using IPv4 protocol. If you are using IPv6, please, use internet search engine to find guide for your platform.
+- **Windows**
+    1. Open 'run' window (Win + R)
+    2. Type ```ncpa.cpl```
+    3. Right click on your actual connection
+    4. Select 'Properties'
+    5. Select 'Networking' tab
+    6. In the list, find 'Internet Protocol Version 4 (TCP/IPv4)'
+    7. Click on 'Advanced'
+    8. Select option 'Use the following DNS server addresses:'
+    9. As preferred DNS server, set IP address of server with installed Simple Hosting
+    10. As alternate DNS server, set any valid DNS server (defined by your ISP or any public DNS server)
+    11. Click 'OK'
+- **Linux**
+    1. Open ```/etc/resolv.conf``` file with root priviledges using your faviourite text editor (example: ```sudo nano /etc/resolv.conf```)
+    2. Add following entry above all existing nameserver directives:
+        ``` nameserver [address]```
+    3. Replace ```[address]``` with actual IP address of server with installed Simple Hosting
+    4. Save file
+    >
+    > When using DHCP to manage network information, this solution is just temporal. When DHCP settings will be renewed, these steps must be done again.
+    >
 
 ### 4. Handling errors
 This section describes possible errors which can occure during installation process. Exit codes table shows exit codes of installer with commands which has been tried to execute, but execution failed.
@@ -50,28 +74,32 @@ Table with exit codes:
 | 0         | Simple Hosting was successfully installed on the server.                                                                            |
 | 10        | SSH running on server was not confirmed.                                                                                            |
 | 11        | SSH connection cannot be established.                                                                                               |
-| 20        | ``` dnf install httpd -y ```                                                                                                        |
-| 21        | ``` dnf install bind bind-utils -y ```                                                                                              |
-| 30        | ``` rm -r -f $WWWHome ```                                                                                                           |
-| 31        | ```mkdir -p $WWWHome```                                                                                                             |
-| 32        | ```chown -R apache:apache $WWWHome```                                                                                               |
-| 33        | ```wget -O /etc/httpd/conf.d/$address.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/root.conf.d```     |
-| 34        | ```sed -i 's/`${name}/$address/g' /etc/httpd/conf.d/$address.conf```                                                                |
-| 35        | ```wget -O $WWWHome/simple_hosting.zip https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/simple_hosting.zip```  |
-| 36        | ```unzip -o $WWWHome/simple_hosting.zip -d $WWWHome```                                                                              |
-| 37        | ```rm -f $WWWHome/simple_hosting.zip```                                                                                             |
-| 40        | ```wget -O /etc/named.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/named.conf.d```                    |
-| 41        | ```sed -i 's/`${name}/$address/g' /etc/named.conf```                                                                                |
-| 42        | ```sed -i 's/`${domain}/$address/g' /etc/named.conf```                                                                              |
-| 43        | ```sed -i 's/`${ip}/$ip/g' /etc/named.conf```                                                                                       |
-| 44        | ```chown -R named:named /etc/named```                                                                                               |
-| 50        | ```firewall-cmd --add-service=http --permanent```                                                                                   |
-| 51        | ```firewall-cmd --add-service=https --permanent```                                                                                 |
-| 52        | ```firewall-cmd --add-service=dns --permanent```                                                                                    |
-| 53        | ```firewall-cmd --reload```                                                                                                         |
-| 60        | ```systemctl start httpd.service```                                                                                                 |
-| 61        | ```systemctl enable httpd.service```                                                                                                |
-| 62        | ```systemctl restart httpd.service```                                                                                               |
-| 63        | ```systemctl start named.service```                                                                                                 |
-| 64        | ```systemctl enable named.service```                                                                                                |
-| 65        | ```systemctl restart named.service```                                                                                               |
+| 20        | ```dnf install httpd -y```                                                                                                          |
+| 21        | ```dnf install bind bind-utils -y```                                                                                                |
+| 30        | ```rm -f /etc/httpd/conf/httpd.conf```                                                                                              |
+| 31        | ```wget -O /etc/httpd/conf/httpd.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/httpd.conf```           |
+| 32        | ```sed -i 's/`${www}/$WWWHome/g' /etc/httpd/conf/httpd.conf```                                                                      |
+| 40        | ```rm -r -f $WWWHome```                                                                                                             |
+| 41        | ```mkdir -p $WWWHome```                                                                                                             |
+| 42        | ```chown -R apache:apache $WWWHome```                                                                                               |
+| 43        | ```wget -O /etc/httpd/conf.d/$address.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/root.conf```       |
+| 44        | ```sed -i 's/`${name}/$address/g' /etc/httpd/conf.d/$address.conf```                                                                |
+| 45        | ```sed -i 's/`${root}/$WWWHome/g' /etc/httpd/conf.d/$address.conf```                                                                |
+| 46        | ```wget -O $WWWHome/simple_hosting.zip https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/simple_hosting.zip```  |
+| 47        | ```unzip -o $WWWHome/simple_hosting.zip -d $WWWHome```                                                                              |
+| 48        | ```rm -f $WWWHome/simple_hosting.zip```                                                                                             |
+| 50        | ```wget -O /etc/named.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/named.conf.d```                    |
+| 51        | ```sed -i 's/`${name}/$address/g' /etc/named.conf```                                                                                |
+| 52        | ```sed -i 's/`${domain}/$address/g' /etc/named.conf```                                                                              |
+| 53        | ```sed -i 's/`${ip}/$ip/g' /etc/named.conf```                                                                                       |
+| 54        | ```chown -R named:named /etc/named```                                                                                               |
+| 60        | ```firewall-cmd --add-service=http --permanent```                                                                                   |
+| 61        | ```firewall-cmd --add-service=https --permanent```                                                                                  |
+| 62        | ```firewall-cmd --add-service=dns --permanent```                                                                                    |
+| 63        | ```firewall-cmd --reload```                                                                                                         |
+| 70        | ```systemctl start httpd.service```                                                                                                 |
+| 71        | ```systemctl enable httpd.service```                                                                                                |
+| 72        | ```systemctl restart httpd.service```                                                                                               |
+| 73        | ```systemctl start named.service```                                                                                                 |
+| 74        | ```systemctl enable named.service```                                                                                                |
+| 75        | ```systemctl restart named.service```                                                                                               |
