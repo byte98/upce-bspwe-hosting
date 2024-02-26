@@ -10,7 +10,7 @@ Before starting installation process, there are some steps needed to do.
 2. Be sure to have created SSH key on your system and uploaded to the server.
     > If you don't have created SSH key on your system, it can be done with following commands:
     >```
-    > ssh-keygen -t ed25519 -C ```root@server```
+    > ssh-keygen -t ed25519 -C "root@[server]"
     >```
     > Replace [server] by actual address of server (like 192.168.0.1).
     >```
