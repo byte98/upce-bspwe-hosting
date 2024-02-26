@@ -62,11 +62,11 @@ If you want to test hosting service on your local environment, then you need to 
 ### 4. Handling errors
 This section describes possible errors which can occure during installation process. Exit codes table shows exit codes of installer with commands which has been tried to execute, but execution failed.
 Commands in exit codes table may or may not contain some value of variable. Meaning of this variables is in followiing table.
-| Variable       | Description                                                                                                        | Value            |
-|:--------------:|:-------------------------------------------------------------------------------------------------------------------|:-----------------|
-| ```$WWWHome``` | Path, where Simple Hosting application will be installed. This value is hardcoded in installer and can be changed. | ``` /var/www ``` |
-| ```$address``` | Address of server. This value is get by user during installation of web application (example: example.com)         |                  |
-| ```$ip```      | IP address of server. This value is get by installer dynamically.                                                  |                  |
+| Variable       | Description                                                                                                        | Value                 |
+|:--------------:|:-------------------------------------------------------------------------------------------------------------------|:----------------------|
+| ```$WWWHome``` | Path, where Simple Hosting application will be installed. This value is hardcoded in installer and can be changed. | ``` /var/www/html ``` |
+| ```$address``` | Address of server. This value is get by user during installation of web application (example: example.com)         |                       |
+| ```$ip```      | IP address of server. This value is get by installer dynamically.                                                  |                       |
 
 Table with exit codes:
 | Exit code | Command (or description)                                                                                                                                |
