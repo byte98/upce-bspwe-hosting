@@ -66,7 +66,7 @@ Table with exit codes:
 | 43        | ```sed -i 's/`${ip}/$ip/g' /etc/named.conf```                                                                                       |
 | 44        | ```chown -R named:named /etc/named```                                                                                               |
 | 50        | ```firewall-cmd --add-service=http --permanent```                                                                                   |
-| 51        | ```firewall-cmd --add-servtice=https --permanent```                                                                                 |
+| 51        | ```firewall-cmd --add-service=https --permanent```                                                                                 |
 | 52        | ```firewall-cmd --add-service=dns --permanent```                                                                                    |
 | 53        | ```firewall-cmd --reload```                                                                                                         |
 | 60        | ```systemctl start httpd.service```                                                                                                 |
