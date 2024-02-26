@@ -41,6 +41,16 @@ jobs:
           asset_path: simple_hosting.zip
           asset_name: simple_hosting.zip
           asset_content_type: application/zip
+      - name: Upload Apache2 Configuration File Asset
+        id: upload-apache-config-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CONFIG/httpd.conf.d
+          asset_name: httpd.conf.d
+          asset_content_type: text/plain
       - name: Upload Root Web Configuration File Asset
         id: upload-root-web-release-asset
         uses: actions/upload-release-asset@v1
