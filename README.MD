@@ -74,8 +74,12 @@ Table with exit codes:
 | 0         | Simple Hosting was successfully installed on the server.                                                                                                |
 | 10        | SSH running on server was not confirmed.                                                                                                                |
 | 11        | SSH connection cannot be established.                                                                                                                   |
+| 12        | Installation of PowerShell on server was not confirmed.                                                                                                 |
 | 20        | <pre>dnf install httpd -y </pre>                                                                                                                        |
 | 21        | <pre>dnf install bind bind-utils -y </pre>                                                                                                              |
+| 22        | <pre>dnf install snapd -y </pre>                                                                                                                        |
+| 23        | Installer cannot reconnect to the server using SSH.                                                                                                     |
+| 24        | <pre>ln -s /var/lib/snapd/snap /snap && snap install --classic certbot && ln -s /snap/bin/certbot /usr/bin/certbot</pre>                                |
 | 30        | <pre>rm -f /etc/httpd/conf/httpd.conf </pre>                                                                                                            |
 | 31        | <pre>wget -O /etc/httpd/conf/httpd.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/httpd.conf </pre>                         |
 | 32        | <pre>sed -i 's#`${www}#<b><i>$WWWHome</i></b>#g' /etc/httpd/conf/httpd.conf </pre>                                                                      |
@@ -86,18 +90,20 @@ Table with exit codes:
 | 43        | <pre>wget -O <b><i>$WWWHome/</i></b>simple_hosting.zip https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/simple_hosting.zip </pre>  |
 | 44        | <pre>unzip -o <b><i>$WWWHome</i></b>/simple_hosting.zip -d <b><i>$WWWHome </pre>                                                                        |
 | 45        | <pre>rm -f <b><i>$WWWHome</i></b>/simple_hosting.zip </pre>                                                                                             |
-| 50        | <pre>wget -O /etc/named.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/named.conf.d </pre>                                  |
-| 51        | <pre>sed -i 's/`${name}/<b><i>$address</i></b>/g' /etc/named.conf </pre>                                                                                |
-| 52        | <pre>sed -i 's/`${domain}/<b><i>$address</i></b>/g' /etc/named.conf </pre>                                                                              |
-| 53        | <pre>sed -i 's/`${ip}/<b><i>$ip</i></b>/g' /etc/named.conf </pre>                                                                                       |
-| 54        | <pre>chown -R named:named /etc/named </pre>                                                                                                             |
-| 60        | <pre>firewall-cmd --add-service=http --permanent </pre>                                                                                                 |
-| 61        | <pre>firewall-cmd --add-service=https --permanent </pre>                                                                                                |
-| 62        | <pre>firewall-cmd --add-service=dns --permanent </pre>                                                                                                  |
-| 63        | <pre>firewall-cmd --reload </pre>                                                                                                                       |
-| 70        | <pre>systemctl start httpd.service </pre>                                                                                                               |
-| 71        | <pre>systemctl enable httpd.service </pre>                                                                                                              |
-| 72        | <pre>systemctl restart httpd.service </pre>                                                                                                             |
-| 73        | <pre>systemctl start named.service </pre>                                                                                                               |
-| 74        | <pre>systemctl enable named.service </pre>                                                                                                              |
-| 75        | <pre>systemctl restart named.service </pre>                                                                                                             |
+| 50        | <pre>certbot --apache</pre>                                                                                                                             |
+| 51        | <pre>crontab -l > tmp && echo '0 */12 * * * certbot renew' >> tmp && crontab tmp && rm -f tmp</pre>                                                     |
+| 60        | <pre>wget -O /etc/named.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/named.conf.d </pre>                                  |
+| 61        | <pre>sed -i 's/`${name}/<b><i>$address</i></b>/g' /etc/named.conf </pre>                                                                                |
+| 62        | <pre>sed -i 's/`${domain}/<b><i>$address</i></b>/g' /etc/named.conf </pre>                                                                              |
+| 63        | <pre>sed -i 's/`${ip}/<b><i>$ip</i></b>/g' /etc/named.conf </pre>                                                                                       |
+| 64        | <pre>chown -R named:named /etc/named </pre>                                                                                                             |
+| 70        | <pre>firewall-cmd --add-service=http --permanent </pre>                                                                                                 |
+| 71        | <pre>firewall-cmd --add-service=https --permanent </pre>                                                                                                |
+| 72        | <pre>firewall-cmd --add-service=dns --permanent </pre>                                                                                                  |
+| 73        | <pre>firewall-cmd --reload </pre>                                                                                                                       |
+| 80        | <pre>systemctl start httpd.service </pre>                                                                                                               |
+| 81        | <pre>systemctl enable httpd.service </pre>                                                                                                              |
+| 82        | <pre>systemctl restart httpd.service </pre>                                                                                                             |
+| 83        | <pre>systemctl start named.service </pre>                                                                                                               |
+| 84        | <pre>systemctl enable named.service </pre>                                                                                                              |
+| 85        | <pre>systemctl restart named.service </pre>                                                                                                             |
