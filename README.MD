@@ -14,7 +14,7 @@ Before starting installation process, there are some steps needed to do.
     >```
     > Replace [server] by actual address of server (like 192.168.0.1).
     >```
-    >ssh-copy-id root@server
+    >ssh-copy-id root@[server]
     >```
 3. Make sure to have installed PowerShell at version 7.1 or later.
     > How to install PowerShell can be found at [official documentation](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.4).
@@ -39,7 +39,7 @@ Installer leads you through the whole installation process. It requires some add
 If you want to test hosting service on your local environment, then you need to slightly modify your network settings. Luckily, only thing, which needs modification, is DNS settings. On your machine, add address of server as the first entry in DNS servers list. Following guide expects using IPv4 protocol. If you are using IPv6, please, use internet search engine to find guide for your platform.
 - **Windows**
     1. Open 'run' window (Win + R)
-    2. Type ```ncpa.cpl```
+    2. Type ```ncpa.cpl``` and press 'Run' (Enter)
     3. Right click on your actual connection
     4. Select 'Properties'
     5. Select 'Networking' tab
@@ -61,7 +61,7 @@ If you want to test hosting service on your local environment, then you need to 
 
 ### 4. Handling errors
 This section describes possible errors which can occure during installation process. Exit codes table shows exit codes of installer with commands which has been tried to execute, but execution failed.
-Commands in exit codes table may or may not contain some value of variable. Meaning of this variables is in followiing table.
+Commands in exit codes table may or may not contain some value of variable. Meaning of this variables is in following table.
 | Variable       | Description                                                                                                        | Value                 |
 |:--------------:|:-------------------------------------------------------------------------------------------------------------------|:----------------------|
 | ```$WWWHome``` | Path, where Simple Hosting application will be installed. This value is hardcoded in installer and can be changed. | ``` /var/www/html ``` |
