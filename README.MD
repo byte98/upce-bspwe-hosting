@@ -70,7 +70,7 @@ Commands in exit codes table may or may not contain some value of variable. Mean
 | ```$admin```        | E-mail address of administrator. This is get from user by installer.                                               |                                                                                               |
 | ```$organization``` | Name of organization. This is get from user by installer.                                                          |                                                                                               |
 | ```$orgName```      | Name of organization transformed to use in paths.                                                                  |<code><b><i>$organization</b></i> -replace '\s', '' -replace '\W', '' -tolower</code>          |
-| ```$pkiName```      | Name of directory with certificates.                                                                               |<code>"pki_<b><i>$orgName</i></b>"</code>                                                      |
+| ```$pkiName```      | Name of directory with certificates.                                                                               |<code>pki_<b><i>$orgName</i></b></code>                                                        |
 | ```$caPath```       | Path to directory where all settings of CA is stored.                                                              |<code>/etc/<b><i>$pkiName</i></b>/CA</code>                                                    |
 
 Table with exit codes:
