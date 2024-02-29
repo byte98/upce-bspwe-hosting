@@ -69,7 +69,9 @@ Commands in exit codes table may or may not contain some value of variable. Mean
 | ```$ip```           | IP address of server. This value is get by installer dynamically.                                                  |                                                                                               |
 | ```$admin```        | E-mail address of administrator. This is get from user by installer.                                               |                                                                                               |
 | ```$organization``` | Name of organization. This is get from user by installer.                                                          |                                                                                               |
-| ```$pkiName```      | Name of organization transformed to use in paths.                                                                  | <code>"pki_" + <b><i>$organization</b></i> -replace '\s', '' -replace '\W', '' -tolower</code>|
+| ```$orgName```      | Name of organization transformed to use in paths.                                                                  |<code><b><i>$organization</b></i> -replace '\s', '' -replace '\W', '' -tolower</code>          |
+| ```$pkiName```      | Name of directory with certificates.                                                                               |<code>"pki_<b><i>$orgName</i></b>"</code>                                                      |
+| ```$caPath```       | Path to directory where all settings of CA is stored.                                                              |<code>/etc/<b><i>$pkiName</i></b>/CA</code>                                                    |
 
 Table with exit codes:
 | Exit code | Command (or description)                                                                                                                                                                                                    |
@@ -103,9 +105,9 @@ Table with exit codes:
 | 60        | <pre>certbot run -n --apache -d <b><i>$address</i></b>,www.<b><i>$address</i></b> -m <b><i>$admin</i></b> --redirect --agree-tos</pre>                                                                                      |
 | 61        | <pre>crontab -l > tmp && echo '0 */12 * * * certbot renew' >> tmp && crontab tmp && rm -f tmp</pre>                                                                                                                         |
 | 60        | <pre>mkdir -p -m 0755 /etc/<b><i>$pkiName</i></b>                                                                                                                                                                           |
-| 61        | <pre>mkdir -m 0755 /etc/<b><i>$pkiName</i></b>/CA /etc/<b><i>$pkiName</i></b>/CA/private /etc/<b><i>$pkiName</i></b>/CA/certs /etc/$<b><i>pkiName</i></b>/CA/newcerts /etc/<b><i>$pkiName</i></b>/CA/crl                    |
-| 62        | <pre>cp /etc/pki/tls/openssl.cnf /etc/<b><i>$pkiName</i></b>/CA/openssl.ca.cnf && chmod 0600 /etc/<b><i>$pkiName</i></b>/CA/openssl.ca.cnf</pre>                                                                            |
-| 63        | <pre>touch /etc/<b><i>$pkiName</i></b>/CA/index.txt && echo '01' > /etc/<b><i>$pkiName</i></b>/CA/serial</pre>
+| 61        | <pre>mkdir -p -m 0755 <b><i>$caPath</i></b> <b><i>$caPath</i></b>/private <b><i>$caPath</i></b>/certs /etc/$<b><i>pkiName</i></b>/CA/newcerts <b><i>$caPath</i></b>/crl                    |
+| 62        | <pre>cp /etc/pki/tls/openssl.cnf <b><i>$caPath</i></b>/openssl.ca.cnf && chmod 0600 <b><i>$caPath</i></b>/openssl.ca.cnf</pre>                                                                            |
+| 63        | <pre>touch <b><i>$caPath</i></b>/index.txt && echo '01' > <b><i>$caPath</i></b>/serial</pre>
 | 70        | <pre>wget -O /etc/named.conf https://github.com/byte98/upce-bspwe-hosting/releases/latest/download/named.conf.d </pre>                                                                                                      |
 | 71        | <pre>sed -i 's/`${name}/<b><i>$address</i></b>/g' /etc/named.conf </pre>                                                                                                                                                    |
 | 72        | <pre>sed -i 's/`${domain}/<b><i>$address</i></b>/g' /etc/named.conf </pre>                                                                                                                                                  |
