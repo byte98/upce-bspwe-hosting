@@ -27,7 +27,7 @@ Unzip downloaded file and then continue. There are seweral ways how to run insta
 - **Windows**
     1. Locate the file **install.ps1**
     2. Right click
-    3 Run with PowerShell
+    3. Run with PowerShell
 - **Linux**
     1. Run following command:
         ```
