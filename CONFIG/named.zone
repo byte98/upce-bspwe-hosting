@@ -1,7 +1,7 @@
 $ORIGIN ${domain}.
 $TTL 86400
 @         IN  SOA  ns.${domain}.  ${admin}. (
-              2001062501  ; serial
+              0           ; serial
               21600       ; refresh after 6 hours
               3600        ; retry after 1 hour
               604800      ; expire after 1 week
