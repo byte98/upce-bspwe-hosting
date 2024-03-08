@@ -102,4 +102,14 @@ jobs:
           asset_path: CONFIG/named.zone
           asset_name: named.zone
           asset_content_type: text/plain
+      - name: Upload SFTP Server Configuration File Asset
+        id: upload-sftp-config-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CONFIG/sftp.conf
+          asset_name: sftp.conf
+          asset_content_type: text/plain
         
