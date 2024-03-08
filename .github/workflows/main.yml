@@ -112,4 +112,14 @@ jobs:
           asset_path: CONFIG/sftp.conf
           asset_name: sftp.conf
           asset_content_type: text/plain
+      - name: Upload PHP Configuration File Asset
+        id: upload-php-config-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CONFIG/php.conf
+          asset_name: php.conf
+          asset_content_type: text/plain
         
