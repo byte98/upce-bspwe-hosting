@@ -8,5 +8,9 @@
 <body>
     <h1>Simple Hosting</h1>
     <p>This is just some testing page of application..</p>
+    <hr>
+    <?php
+        phpinfo();
+    ?>
 </body>
 </html>
