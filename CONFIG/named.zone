@@ -1,3 +1,12 @@
+;
+; ${domain}.zone
+; File containing configuration of ${domain} domain.
+; Author: Jiri Skoda <jiri.skoda@student.upce.cz>
+;         Faculty of Electrical Engineering and Informatics
+;         University of Pardubice
+;         2024, Pardubice
+;
+
 $ORIGIN ${domain}.
 $TTL 86400
 @         IN  SOA  ns.${domain}.  ${admin}. (

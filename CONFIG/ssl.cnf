@@ -1,3 +1,13 @@
+# 
+# openssl.server.cnf
+# File containing configuration of OpenSSL to generate certificates.
+# 
+# Modified by: Jiri Skoda<jiri.skoda@student.upce.cz>
+#              Faculty of Electrical Engineering
+#              University of Pardubice
+#              2024, Pardubice
+#
+
 #
 # OpenSSL example configuration file.
 # See doc/man5/config.pod for more info.
