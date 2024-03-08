@@ -8,6 +8,8 @@ $TTL 86400
               86400 )     ; minimum TTL of 1 day
 ;
 ;
+          IN  A      ${ip}
+
           IN  NS     ns.${domain}.
 ns        IN  A      ${ip}
 ;
@@ -15,3 +17,5 @@ ns        IN  A      ${ip}
 @         IN  MX     10  smtp.${domain}.
 smtp      IN  A      ${ip}
 ;
+
+*         IN  A      ${ip}
