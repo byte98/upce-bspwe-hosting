@@ -122,4 +122,44 @@ jobs:
           asset_path: CONFIG/php.conf
           asset_name: php.conf
           asset_content_type: text/plain
+      - name: Upload Net2FTP application
+        id: upload-net2ftp-application-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: "CONFIG/net2ftp.zip"
+          asset_name: net2ftp.zip
+          asset_content_type: application/zip
+      - name: Upload Net2FTP configuration (1/3)
+        id: upload-net2ftp-config-1-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: "CONFIG/net2ftp.settings_authorizations.inc.php"
+          asset_name: net2ftp.settings_authorizations.inc.php
+          asset_content_type: text/plain
+      - name: Upload Net2FTP configuration (2/3)
+        id: upload-net2ftp-config-2-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: "CONFIG/net2ftp.settings_screens.inc.php"
+          asset_name: net2ftp.settings_screens.inc.php
+          asset_content_type: text/plain
+      - name: Upload Net2FTP configuration (3/3)
+        id: upload-net2ftp-config-3-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: "CONFIG/net2ftp.settings.inc.php"
+          asset_name: net2ftp.settings.inc.php
+          asset_content_type: text/plain
         
