@@ -21,7 +21,7 @@
 // ----------------------------------------------------------------------------------
 
 // Enter your email address; this is used as "from" address when sending files in attachment
-$net2ftp_settings["email_feedback"] = "webmaster@enter-your-domain-here.com";
+$net2ftp_settings["email_feedback"] = "admin@localhost";
 
 // Default language and skin (look in /languages and /skins to see which are available)
 $net2ftp_settings["default_language"] = "en";
@@ -95,7 +95,7 @@ $net2ftp_settings["log_length_months"] = 2; // number of months
 // Logging to the system logger
 // ----------------------------------------------------------------------------------
 
-$net2ftp_settings["use_syslog"] = "no";
+$net2ftp_settings["use_syslog"] = "yes";
 $net2ftp_settings["syslog_priority"] = LOG_NOTICE;
 $net2ftp_settings["syslog_facility"] = LOG_MAIL;
 $net2ftp_settings["syslog_ident"] = "net2ftp";
