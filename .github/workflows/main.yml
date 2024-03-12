@@ -132,4 +132,14 @@ jobs:
           asset_path: "CONFIG/webftp.conf"
           asset_name: webftp.conf
           asset_content_type: text/plain
+      - name: Upload database configuration
+        id: upload-database-config-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: "CONFIG/database.sql"
+          asset_name: database.sql
+          asset_content_type: text/plain
         
