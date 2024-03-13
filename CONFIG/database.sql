@@ -81,6 +81,9 @@ CREATE TABLE HOSTINGS(
     disk         INT              NOT NULL,
     database     INT              NOT NULL,
     
+    CONSTRAINT fk_dreg
+        FOREIGN KEY (domain)
+            REFERENCES DREG_DOMAINS(id)
 );
 
 
