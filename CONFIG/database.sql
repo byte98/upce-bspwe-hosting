@@ -10,6 +10,7 @@
 --
 
 -- ### DREG (Domain REGistry) ###
+
 -- Table with allowed TLDs
 CREATE TABLE DREG_TLDS(
     id         SERIAL  PRIMARY KEY,
@@ -45,7 +46,7 @@ CREATE TABLE ADDRESSES(
     street        VARCHAR(128)  NOT NULL,
     city          VARCHAR(128)  NOT NULL,
     province      VARCHAR(128)  NOT NULL,
-    country_code  CHAR(2)       NOT NULL,
+    country_code  CHAR(2)       NOT NULL
 );
 
 -- Table with clients (a.k.a. personal data of users)
@@ -90,11 +91,15 @@ CREATE TABLE HOSTINGS(
 -- Table mapping users to its owned hostings
 CREATE TABLE USER_HOSTINGS(
     id          SERIAL            PRIMARY KEY,
-    user        INT               NOT NULL,
+    usr         INT               NOT NULL,
     hosting     INT               NOT NULL,
 
     CONSTRAINT fk_user
-        FOREIGN KEY (user)
-            REFERENCES USERS(id)
+        FOREIGN KEY (usr)
+            REFERENCES USERS(id),
+    
+    CONSTRAINT fk_hosting
+        FOREIGN KEY (hosting)
+            REFERENCES HOSTINGS(id)
 );
 
