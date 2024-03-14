@@ -24,15 +24,15 @@ CREATE TABLE DREG_DOMAINS(
 
     CONSTRAINT fk_TLD
         FOREIGN KEY(tld)
-            REFERENCES DREG_TLD(id)
+            REFERENCES DREG_TLDS(id)
 );
 
 -- Fill some TLDs
-INSERT INTO DREG_TLD (name) VALUES ('cz');
-INSERT INTO DREG_TLD (name) VALUES ('com');
-INSERT INTO DREG_TLD (name) VALUES ('eu');
-INSERT INTO DREG_TLD (name) VALUES ('net');
-INSERT INTO DREG_TLD (name) VALUES ('org');
+INSERT INTO DREG_TLDS (name) VALUES ('cz');
+INSERT INTO DREG_TLDS (name) VALUES ('com');
+INSERT INTO DREG_TLDS (name) VALUES ('eu');
+INSERT INTO DREG_TLDS (name) VALUES ('net');
+INSERT INTO DREG_TLDS (name) VALUES ('org');
 
 
 
