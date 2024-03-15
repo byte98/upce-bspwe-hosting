@@ -13,6 +13,8 @@
 namespace SimpleHosting;
 
 use SimpleHosting\Model\DatabaseFactory;
+use SimpleHosting\Router\Router;
+use SimpleHosting\Router\RoutingTable;
 
 /**
  * Class which represents application itself.
@@ -22,12 +24,17 @@ class Application{
     /**
      * Path to file with configuration.
      */
-    private string $cFile;
+    private readonly string $cFile;
+
+    /**
+     * Router of the application.
+     */
+    private Router $router;
 
     /**
      * Logger of application.
      */
-    private static Logger $logger;
+    private static ?Logger $logger = null;
 
     /**
      * Creates new instance of application.
@@ -54,13 +61,19 @@ class Application{
 
         // Load configuration
         $config = new Configuration($this->cFile);
-        $this->logger = new Logger($config->getLogLevel(), $config->getLogDir());
+        Application::$logger = new Logger($config->getLogLevel(), $config->getLogDir());
         DatabaseFactory::setModel($config->getConnection());
         if ($config->getPHPErrors() == true){
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
         }
+
+        // Initialize router
+        $this->router = new Router();
+        $routingTable = new RoutingTable($config->getRoutes());
+        $routingTable->fillRouter($this->router);
+        var_dump($this->router);
     }
 
     /**
@@ -72,8 +85,8 @@ class Application{
     private static function determineClassPath(string $className): string{
         $reti = "";
         $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
-        $rootPath = $_SERVER["DOCUMENT_ROOT"] . '/APPLICATION';
-        $reti = $rootPath . DIRECTORY_SEPARATOR . strtoupper($classPath) . '.PHP';
+        $rootPath = $_SERVER["DOCUMENT_ROOT"] . "/APPLICATION";
+        $reti = $rootPath . DIRECTORY_SEPARATOR . strtoupper($classPath) . ".PHP";
         $reti = str_replace("SIMPLEHOSTING/", "", $reti);
         echo($className . " -> " . $reti . "<br>");
         return $reti;
@@ -84,7 +97,27 @@ class Application{
      * @return Logger Logger of whole application.
      */
     public static function logger(): Logger{
-        return Application::$logger;
+        $reti = Application::$logger;
+        if ($reti == null){
+            Application::$logger = Logger::none();
+            $reti = Application::$logger;
+        }
+        return $reti;
+    }
+
+    /**
+     * Gets view file.
+     * @param string $viewName Name of view file.
+     * @example Application::getView("homepage");
+     */
+    public static function getView(string $viewName){
+        $path = $_SERVER["DOCUMENT_ROOT"] . "/APPLICATION/VIEW/" . $viewName . ".PHTML";
+        if (file_exists($path)){
+            include $path;
+        }
+        else{
+            Application::logger()->warning("Cannot get view '" . $viewName . "': file does not exists!");
+        }
     }
 
     /**

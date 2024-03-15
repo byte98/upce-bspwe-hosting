@@ -12,6 +12,7 @@
 
 namespace SimpleHosting\Router;
 
+use SimpleHosting\Router\Route;
 use SimpleHosting\Application;
 use SimpleHosting\Controller\Controller;
 
@@ -27,10 +28,57 @@ class Router{
 
     /**
      * Creates new router.
-     * @param array $routes Array with routes managed by router.
      */
-    public function __construct(array $routes){
-        $this->routes = $routes;
+    public function __construct(){
+        $this->routes = array();
+    }
+
+    /**
+     * Adds route to router.
+     * @param string $path Path of route.
+     * @param Controller $controller Controller of route.
+     */
+    public function addRoute(string $path, Controller $controller){
+        if ($this->containsRoute($path) == false){
+            array_push($this->routes, new Route($path, $controller));
+            Application::logger()->info("New route added (" . $path . " ->  " . get_class($controller) . ")");
+        }
+        else{
+            Application::logger()->warning("Cannot add route: route already exists (" . $path . " ->  " . get_class($controller) . " is already routed to " . $this->getExactRouteName($path) . ")");
+        }
+    }
+
+    /**
+     * Checks, whether routing table already contains route with path.
+     * @param string $path Path of route.
+     * @return bool TRUE if route is in routing table,
+     *              FALSE otherwise.
+     */
+    private function containsRoute(string $path){
+        $reti = false;
+        foreach($this->routes as $route){
+            if ($route->equals($path)){
+                $reti = true;
+                break;
+            }
+        }
+        return $reti;
+    }
+
+    /**
+     * Gets name of controller of route.
+     * @param string $path Path of route.
+     * @return string Name of controller of route.
+     */
+    private function getExactRouteName(string $path): string{
+        $reti = "<unknown>";
+        foreach($this->routes as $route){
+            if ($route->equals($path)){
+                $reti = get_class($route->getTarget());
+                break;
+            }
+        }
+        return $reti;
     }
 
     /**

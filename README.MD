@@ -31,7 +31,7 @@ Unzip downloaded file and then continue. There are seweral ways how to run insta
 - **Linux**
     1. Run following command:
         ```
-            pwsh /path/to/installer/install.ps1
+            pwsh /path/to/installer/INSTALL.PS1
         ```
 Installer leads you through the whole installation process. It requires some additional information and could take some time, so be patient. In some cases, installer will lead you through steps, which installer cannot do itself. For these cases, be prepared to connect to the server and follow commands given by installer.
 

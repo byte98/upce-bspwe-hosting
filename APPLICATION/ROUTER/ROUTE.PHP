@@ -10,6 +10,8 @@
 //         2024, Pardubice
 //
 
+namespace SimpleHosting\Router;
+
 use SimpleHosting\Controller\Controller;
 
 /**
@@ -43,9 +45,24 @@ class Route{
      * @return float Percentage of match of path to route.
      */
     public function matches(string $path): float{
-        $reti = 0.0;
-
+        $reti = 1.0;
+        $parts = explode("/", $path);
+        $myParts = explode("/", $this->path);
+        $partWeight = 1.0 / (float)count($parts);
+        foreach($parts as $part){
+            
+        }
         return $reti;
+    }
+
+    /**
+     * Checks, whether path is equal to path of route.
+     * @param string $path Path which will be checked.
+     * @return bool TRUE if path is equal to path of route,
+     *              FALSE otherwise.
+     */
+    public function equals(string $path): bool{
+        return $this->path == $path;
     }
 
     /**

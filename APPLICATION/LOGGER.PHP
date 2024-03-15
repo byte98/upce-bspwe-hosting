@@ -30,6 +30,21 @@ class Logger{
     private string $path;
 
     /**
+     * Flag, whether logger is none (so it will not do anything).
+     */
+    private bool $isNone = false;
+
+    /**
+     * Creates logger which does nothing.
+     * @return Logger Logger which does nothing.
+     */
+    public static function none(): Logger{
+        $reti = new Logger(LogLevel::ERROR, "");
+        $reti->isNone = true;
+        return $reti;
+    }
+
+    /**
      * Creates new logger.
      * @param LogLevel $level Minimal level of log which will be logged.
      * @param string $path Path to directory where logs will be created.
@@ -100,7 +115,7 @@ class Logger{
      *              FALSE otherwise.
      */
     private function canLog(LogLevel $level): bool{
-        return $level >= $this->level;
+        return $this->isNone == false && $level >= $this->level;
     }
 
     /**
@@ -112,7 +127,6 @@ class Logger{
         if ($this->canLog($level)){
             $this->writeLog($level, $message);
         }
-        
     }
 
     /**

@@ -1,0 +1,33 @@
+<?php
+
+//
+// HOMEPAGE.PHTML
+// File containing view of home page.
+//
+// Author: Jiri Skoda<jiri.skoda@student.upce.cz>
+//         Faculty of Electrical Engineering and Informatics
+//         University of Pardubice
+//         2024, Pardubice
+//
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Hosting</title>
+</head>
+<body>
+    <h1>Simple Hosting</h1>
+    <p>
+        <form>
+            <select>
+                <?php foreach($_TEMP["tlds"] as $tld){ ?>
+                <option value="<?php echo $tld;?>"><?php echo $tld;?></option>
+                <?php }?>
+            </select>
+        </form>
+    </p>
+</body>
+</html>

@@ -17,9 +17,16 @@ namespace SimpleHosting\Controller;
 interface Controller{
 
     /**
-     * Takes control over application.
+     * Handles HTTP get request.
+     * @param array $data Data of request.
      */
-    public function takeControl(): void;
+    public function get(array $data): void;
+
+    /**
+     * Handles HTTP post request.
+     * @param array $data Data of request.
+     */
+    public function post(array $data): void;
 }
 
 ?>

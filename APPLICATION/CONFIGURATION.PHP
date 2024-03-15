@@ -51,6 +51,11 @@ class Configuration{
     private ConnectionModel $connection;
 
     /**
+     * Routing table.
+     */
+    private array $routes;
+
+    /**
      * Creates new manager of configuration.
      * @param string $confFile Path to YAML file with configuration.
      */
@@ -72,6 +77,7 @@ class Configuration{
             if (array_key_exists("LogLevel", $conf) && gettype($conf["LogLevel"]) == "string" && LogLevel::fromString($conf["LogLevel"]) != NULL){$this->logLevel = LogLevel::fromString($conf["LogLevel"]);}
             if (array_key_exists("PHPErrors", $conf) && gettype($conf["PHPErrors"]) == "boolean"){$this->PHPErrors = $conf["PHPErrors"];}
             $this->readConnection($conf);
+            $this->readRoutes($conf);
         }
     }
     
@@ -93,6 +99,16 @@ class Configuration{
                 $conf["DatabaseUser"],
                 $conf["DatabasePassword"]
             );
+        }
+    }
+
+    /**
+     * Reads routes form configuration file.
+     * @param mixed $conf Parsed configuration from file.
+     */
+    private function readRoutes(mixed $conf): void{
+        if (array_key_exists("Routes", $conf) && gettype($conf["Routes"]) == "array"){
+            $this->routes = $conf["Routes"];
         }
     }
 
@@ -136,6 +152,16 @@ class Configuration{
      */
     public function getConnection(): ConnectionModel{
         return $this->connection;  
+    }
+
+    /**
+     * Gets routes from configuration file.
+     * @return array Routes from configuration file,
+     *               where keys are paths and values are names
+     *               of classes.
+     */
+    public function getRoutes(): array{
+        return $this->routes;
     }
 
 }

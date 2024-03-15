@@ -48,7 +48,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/httpd.conf
+          asset_path: CONFIG/HTTPD.CONF
           asset_name: httpd.conf
           asset_content_type: text/plain
       - name: Upload Root Web Configuration File Asset
@@ -58,7 +58,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/root.conf
+          asset_path: CONFIG/ROOT.CONF
           asset_name: root.conf
           asset_content_type: text/plain
       - name: Upload SSL Configuration File Asset
@@ -68,7 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/ssl.cnf
+          asset_path: CONFIG/SSL.CNF
           asset_name: ssl.cnf
           asset_content_type: text/plain
       - name: Upload Client Web Configuration File Asset
@@ -78,7 +78,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/web.conf
+          asset_path: CONFIG/WEB.CONF
           asset_name: web.conf
           asset_content_type: text/plain
       
@@ -89,7 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/named.conf
+          asset_path: CONFIG/NAMED.CONF
           asset_name: named.conf
           asset_content_type: text/plain
       - name: Upload DNS Zone Configuration File Asset
@@ -99,7 +99,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/named.zone
+          asset_path: CONFIG/NAMED.ZONE
           asset_name: named.zone
           asset_content_type: text/plain
       - name: Upload SFTP Server Configuration File Asset
@@ -109,7 +109,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/sftp.conf
+          asset_path: CONFIG/SFTP.CONF
           asset_name: sftp.conf
           asset_content_type: text/plain
       - name: Upload PHP Configuration File Asset
@@ -119,7 +119,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CONFIG/php.conf
+          asset_path: CONFIG/PHP.CONF
           asset_name: php.conf
           asset_content_type: text/plain
       - name: Upload Web FTP configuration
@@ -129,7 +129,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: "CONFIG/webftp.conf"
+          asset_path: CONFIG/WEBFTP.CONF
           asset_name: webftp.conf
           asset_content_type: text/plain
       - name: Upload database configuration
@@ -139,7 +139,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: "CONFIG/database.sql"
+          asset_path: CONFIG/DATABASE.SQL
           asset_name: database.sql
           asset_content_type: text/plain
         
