@@ -80,6 +80,65 @@ class PathUtils{
         }
         return $reti;
     }
+
+    /**
+     * Gets values from request.
+     * @param string $route Original route.
+     * @param string $request Requested url.
+     * @return array Array with values from request.
+     */
+    public static function getValues(string $route, string $request): array{
+        $parts = explode('/', $route);
+        $data = explode('/', $request);
+        $reti = array();
+        for( $i = 0; $i < count($parts); $i++ ){
+            if (PathUtils::isPlaceholder( $parts[$i] )) {
+                $name = PathUtils::getPlaceholderName( $parts[$i] );
+                $value = null;
+                if (count($data) > $i){
+                    $value = PathUtils::parseValue( $data[$i], PathUtils::getPlaceholderType( $parts[$i] ) );
+                }
+                $reti[$name] = $value;
+            }
+        }
+        return $reti;
+    }
+
+    /**
+     * Parses value from raw data to requested data type.
+     * @param string $rawData Raw data which will be parsed.
+     * @param PlaceholderType $requestedType Requested data type.
+     * @return string | int | float | bool | null Parsed value,
+     *                                            or NULL if data cannot be parsed.
+     */
+    private static function parseValue(string $rawData, PlaceholderType $requestedType): string | int | float | bool | null{
+        $reti = null;
+        if ($requestedType == PlaceholderType::Number && is_numeric($rawData)){
+            $floatval = floatval($rawData);
+            if (is_nan($floatval)){
+                $intval = intval($rawData);
+                if ($intval !== 0 || $rawData === '0'){
+                    $reti = $intval;
+                }
+            }
+            else{
+                $reti = $floatval;
+            }
+        }
+        else if ($requestedType == PlaceholderType::Boolean){
+            $value = strtolower(StringUtils::trim($rawData));
+            if ($value == "true"){
+                $reti = true;
+            }
+            else if ($value == "false"){
+                $reti = false;
+            }
+        }
+        else if ($requestedType == PlaceholderType::Text){
+            $reti = $rawData;
+        }
+        return $reti;
+    }
 }
 
 ?>

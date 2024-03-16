@@ -13,6 +13,7 @@
 namespace SimpleHosting\Router;
 
 use SimpleHosting\Controller\Controller;
+use SimpleHosting\Utils\PathUtils;
 
 /**
  * Class representing single route of application.
@@ -40,17 +41,45 @@ class Route{
     }
 
     /**
-     * Computes match of path to route.
+     * Checks, whether path matches route.
      * @param string $path Path of application.
-     * @return float Percentage of match of path to route.
+     * @return bool TRUE if path matches route,
+     *              FALSE otherwise.
      */
-    public function matches(string $path): float{
-        $reti = 1.0;
+    public function matches(string $path): bool{
+        $reti = false;
         $parts = explode("/", $path);
-        $myParts = explode("/", $this->path);
-        $partWeight = 1.0 / (float)count($parts);
-        foreach($parts as $part){
-            
+        $rparts = explode("/", $this->path);
+        if (count($parts) == count($rparts)){
+            $reti = true;
+            for($i = 0; $i < count($parts); $i++){
+                $part = $parts[$i];
+                $rpart = $rparts[$i];
+                if (PathUtils::isPlaceholder($rpart)){ 
+                    // In route definititon, there is placeholder.
+                    // So, type is parsed from definition and then
+                    // checked against actual value in path.
+                    $ptype = PathUtils::getPlaceholderType($rpart);
+                    if ($ptype !== false){
+                        $reti = $ptype->valueMatches($part);
+                        if ($reti == false){
+                            break;
+                        }
+                    }
+                    else{
+                        Application::logger()->error("Cannot get type of placeholder '" . $rpart . "' (path: " . $this->path . ")");
+                        $reti = false;
+                        break;
+                    }
+                }
+                else{
+                    // There is no placeholder; just check strings.
+                    $reti = ($part == $rpart);
+                    if ($reti == false){
+                        break;
+                    }
+                }
+            }
         }
         return $reti;
     }
@@ -71,6 +100,14 @@ class Route{
      */
     public function getTarget(): Controller{
         return $this->target;
+    }
+
+    /**
+     * Gets data from request.
+     * @param string $request Requested url.
+     */
+    public function getData(string $request): array{
+        return PathUtils::getValues($this->path, $request);
     }
 }
 

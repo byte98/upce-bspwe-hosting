@@ -11,7 +11,7 @@
 //
 
 
-namespace SimpleHosting;
+namespace SimpleHosting\Utils\Logger;
 
 use SimpleHosting\Utils\StringUtils;
 
@@ -21,24 +21,29 @@ use SimpleHosting\Utils\StringUtils;
 enum LogLevel{
 
     /**
+     * Lowest level of log.
+     */
+    case Low;
+
+    /**
      * Base level of log.
      */
-    case BASE;
+    case Base;
 
     /**
      * Log providing some important information.
      */
-    case INFO;
+    case Info;
 
     /**
      * Log warning about something.
      */
-    case WARNING;
+    case Warning;
 
     /**
      * Log informing about error.
      */
-    case ERROR;
+    case Error;
 
     /**
      * Gets string representation of log level.
@@ -47,10 +52,11 @@ enum LogLevel{
     public function toString(): string{
         $reti = "";
         switch($this){
-            case LogLevel::BASE:    $reti = "BASE";    break;
-            case LogLevel::INFO:    $reti = "INFO";    break;
-            case LogLevel::WARNING: $reti = "WARNING"; break;
-            case LogLevel::ERROR:   $reti = "ERROR";   break;  
+            case LogLevel::Low:     $reti = "LOW";     break;
+            case LogLevel::Base:    $reti = "BASE";    break;
+            case LogLevel::Info:    $reti = "INFO";    break;
+            case LogLevel::Warning: $reti = "WARNING"; break;
+            case LogLevel::Error:   $reti = "ERROR";   break;  
         }
         return $reti;
     }
@@ -65,10 +71,11 @@ enum LogLevel{
     public static function fromString(string $str): ?LogLevel{
         $reti = NULL;
         switch(strtoupper(StringUtils::trim($str))){
-            case "BASE":    $reti = LogLevel::BASE;    break;
-            case "INFO":    $reti = LogLevel::INFO;    break;
-            case "WARNING": $reti = LogLevel::WARNING; break;
-            case "ERROR":   $reti = LogLevel::ERROR;   break;
+            case "LOW":     $reti = LogLevel::Low;     break;
+            case "BASE":    $reti = LogLevel::Base;    break;
+            case "INFO":    $reti = LogLevel::Info;    break;
+            case "WARNING": $reti = LogLevel::Warning; break;
+            case "ERROR":   $reti = LogLevel::Error;   break;
         }
         return $reti;
     }

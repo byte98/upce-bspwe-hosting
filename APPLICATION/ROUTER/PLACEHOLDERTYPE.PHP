@@ -40,17 +40,17 @@ enum PlaceholderType{
         $reti = false;
         $valueType = gettype($value);
         if ($this == PlaceholderType::Number){
-            if ($valueType == "integer" || $valueType == "double"){
+            if ($valueType == "integer" || $valueType == "double" || ($valueType == "string" && is_numeric($value))){
+                $reti = true;
+            }
+        }
+        else if ($this == PlaceholderType::Boolean){
+            if ($valueType == "boolean" || ($valueType == "string" && (strtolower($value) == "true" || strtolower($value) == "false"))){
                 $reti = true;
             }
         }
         else if ($this == PlaceholderType::Text){
             if ($valueType == "string"){
-                $reti = true;
-            }
-        }
-        else if ($this == PlaceholderType::Boolean){
-            if ($valueType == "boolean"){
                 $reti = true;
             }
         }

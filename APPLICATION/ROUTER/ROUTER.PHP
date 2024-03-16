@@ -84,23 +84,41 @@ class Router{
     /**
      * Performs routing.
      * @param string $path Path of application.
-     * @return Controller Target of route,
-     *                    or NULL if routing table is empty.
+     * @return Route Route to which request should be routed,
+     *                or NULL if no such route can be found.
      */
-    public function route(string $path): ?Controller{
+    public function route(string $path): ?Route{
         $reti = NULL;
         if (count($this->routes) > 0){
-            $reti = $this->routes[0];
-            $match = $reti->matches($path);
-            foreach($this->routes as $route){
-                if ($route->matches($path) > $match){
-                    $reti = $route;
-                    $match = $reti->matches($path);
-                }
+            $route = $this->getRoute($path);
+            if ($route != null){
+                $reti = $route;
+            }
+            else{
+                Application::logger()->warning("Cannot find controller for path '" . $path . "'");
             }
         }
         else{
             Application::logger()->error("Routing table is empty!");
+        }
+        return $reti;
+    }
+
+    /**
+     * Gets route associated with application path.
+     * @param string $path Path of application.
+     * @return Route Route associated with application path,
+     *                or NULL if no such route can be found.
+     */
+    private function getRoute(string $path): ?Route{
+        $reti = null;
+        if (count($this->routes) > 0){
+            foreach($this->routes as $route){
+                if ($route->matches($path)){
+                    $reti = $route;
+                    break;
+                }
+            }
         }
         return $reti;
     }

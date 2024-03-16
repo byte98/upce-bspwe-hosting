@@ -15,6 +15,7 @@ namespace SimpleHosting;
 use SimpleHosting\Model\DatabaseFactory;
 use SimpleHosting\Router\Router;
 use SimpleHosting\Router\RoutingTable;
+use SimpleHosting\Utils\Logger\Logger;
 
 /**
  * Class which represents application itself.
@@ -61,7 +62,7 @@ class Application{
 
         // Load configuration
         $config = new Configuration($this->cFile);
-        Application::$logger = new Logger($config->getLogLevel(), $config->getLogDir());
+        Application::$logger = new Logger($config->getLoggerSettings());
         DatabaseFactory::setModel($config->getConnection());
         if ($config->getPHPErrors() == true){
             ini_set('display_errors', 1);
@@ -73,7 +74,6 @@ class Application{
         $this->router = new Router();
         $routingTable = new RoutingTable($config->getRoutes());
         $routingTable->fillRouter($this->router);
-        var_dump($this->router);
     }
 
     /**
@@ -88,7 +88,6 @@ class Application{
         $rootPath = $_SERVER["DOCUMENT_ROOT"] . "/APPLICATION";
         $reti = $rootPath . DIRECTORY_SEPARATOR . strtoupper($classPath) . ".PHP";
         $reti = str_replace("SIMPLEHOSTING/", "", $reti);
-        echo($className . " -> " . $reti . "<br>");
         return $reti;
     }
 
@@ -124,7 +123,21 @@ class Application{
      * Runs application.
      */
     public function run(): void{
-
+        $url = $_SERVER["REQUEST_URI"];
+        $method = strtoupper($_SERVER["REQUEST_METHOD"]);
+        Application::logger()->low("Incoming request [" . $method . "] " . $url);
+        $route = $this->router->route($url);
+        if ($route != null){
+            Application::logger()->base("Giving control to '" . get_class($route->getTarget()) . "'");
+            $data = $route->getData($url);
+            switch($method){
+                case "GET": $route->getTarget()->get($data); break;
+                case "POST": $route->getTarget()->post($data); break;
+            }
+        }
+        else{
+            Application::logger()->warning("Cannot find controller for path '" . $url . "'");
+        }
     }
 
     /**

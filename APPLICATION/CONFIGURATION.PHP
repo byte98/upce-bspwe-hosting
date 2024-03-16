@@ -12,8 +12,9 @@
 
 namespace SimpleHosting;
 
-use SimpleHosting\LogLevel;
 use SimpleHosting\Model\ConnectionModel;
+use SimpleHosting\Utils\Logger\LoggerSettings;
+use SimpleHosting\Utils\Logger\LogLevel;
 
 /**
  * Class which manages configuration of application.
@@ -26,19 +27,9 @@ class Configuration{
     private string $confFile;
 
     /**
-     * Flag, whether application should create logs.
+     * Settings of logger.
      */
-    private bool $log = true;
-
-    /**
-     * Path to directory, to which logs will be created.
-     */
-    private string $logDir = "./";
-
-    /**
-     * Minimal level of logs.
-     */
-    private LogLevel $logLevel = LogLevel::WARNING;
+    private LoggerSettings $loggerSettings;
 
     /**
      * Flag, whether PHP errors should be visible or not.
@@ -61,6 +52,8 @@ class Configuration{
      */
     public function __construct(string $confFile){
         $this->confFile = $confFile;
+        $this->loggerSettings = new LoggerSettings(
+            true, "./logs/", LogLevel::Warning, false, false);
         $this->connection = new ConnectionModel("", "", "", "");
         $this->readFile();
     }
@@ -72,21 +65,41 @@ class Configuration{
         $conf = \yaml_parse_file($this->confFile);
         if ($conf !== false)
         {
-            if (array_key_exists("Log", $conf) && gettype($conf["Log"]) == "boolean"){$this->log = $conf["Log"];}
-            if (array_key_exists("LogPath", $conf) && gettype($conf["LogPath"]) == "string"){$this->logDir = $conf["LogPath"];}
-            if (array_key_exists("LogLevel", $conf) && gettype($conf["LogLevel"]) == "string" && LogLevel::fromString($conf["LogLevel"]) != NULL){$this->logLevel = LogLevel::fromString($conf["LogLevel"]);}
             if (array_key_exists("PHPErrors", $conf) && gettype($conf["PHPErrors"]) == "boolean"){$this->PHPErrors = $conf["PHPErrors"];}
+            $this->readLogger($conf);
             $this->readConnection($conf);
             $this->readRoutes($conf);
         }
+    }
+
+    /**
+     * Reads logger settings.
+     * @param array $conf Parsed configuration from file.
+     */
+    private function readLogger(array $conf){
+        $log = $this->loggerSettings->getLog();
+        $logDir = $this->loggerSettings->getLogPath();
+        $logLevel = $this->loggerSettings->getLogLevel();
+        $logStdout = $this->loggerSettings->getStdout();
+        $logUnicode = $this->loggerSettings->getUnicode();
+
+        if (array_key_exists("Log", $conf) && gettype($conf["Log"]) == "boolean"){$log = $conf["Log"];}
+        if (array_key_exists("LogPath", $conf) && gettype($conf["LogPath"]) == "string"){$logDir = $conf["LogPath"];}
+        if (array_key_exists("LogLevel", $conf) && gettype($conf["LogLevel"]) == "string" && LogLevel::fromString($conf["LogLevel"]) != NULL){$logLevel = LogLevel::fromString($conf["LogLevel"]);}
+        if (array_key_exists("LogStdout", $conf) && gettype($conf["LogStdout"]) == "boolean"){$logStdout = $conf["LogStdout"];}
+        if (array_key_exists("LogUnicode", $conf) && gettype($conf["LogUnicode"]) == "boolean"){$logUnicode = $conf["LogUnicode"];}
+
+        $this->loggerSettings = new LoggerSettings(
+            $log, $logDir, $logLevel, $logStdout, $logUnicode
+        );
     }
     
 
     /**
      * Reads connection information from file.
-     * @param mixed $conf Parsed configuration from file.
+     * @param array $conf Parsed configuration from file.
      */
-    private function readConnection(mixed $conf): void{
+    private function readConnection(array $conf): void{
         if (
             array_key_exists("DatabaseHost", $conf) && gettype($conf["DatabaseHost"]) == "string" &&
             array_key_exists("DatabaseName", $conf) && gettype($conf["DatabaseName"]) == "string" &&
@@ -104,37 +117,20 @@ class Configuration{
 
     /**
      * Reads routes form configuration file.
-     * @param mixed $conf Parsed configuration from file.
+     * @param array $conf Parsed configuration from file.
      */
-    private function readRoutes(mixed $conf): void{
+    private function readRoutes(array $conf): void{
         if (array_key_exists("Routes", $conf) && gettype($conf["Routes"]) == "array"){
             $this->routes = $conf["Routes"];
         }
     }
 
     /**
-     * Gets flag, whether application should create logs.
-     * @return bool TRUE, if application should create logs,
-     *              FALSE otherwise.
+     * Gets settings of logger.
+     * @return LoggerSettings Settings of logger.
      */
-    public function getLog(): bool{
-        return $this->log;
-    }
-
-    /**
-     * Gets path to directory, to which logs will be created.
-     * @return string Path to directory, to which logs will be created.
-     */
-    public function getLogDir(): string{
-        return $this->logDir;
-    }
-
-    /**
-     * Gets minimal level of logs.
-     * @return LogLevel Minimal level of logs.
-     */
-    public function getLogLevel(): LogLevel{
-        return $this->logLevel;
+    public function getLoggerSettings(): LoggerSettings{
+        return $this->loggerSettings;
     }
 
     /**

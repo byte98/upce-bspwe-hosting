@@ -10,9 +10,11 @@
 //         2024, Pardubice
 //
 
-namespace SimpleHosting;
+namespace SimpleHosting\Utils\Logger;
 
-use SimpleHosting\LogLevel;
+use SimpleHosting\Utils\Logger\LogLevel;
+use SimpleHosting\Utils\Logger\LoggerSettings;
+use SimpleHosting\Utils\Logger\LogFormatter;
 
 /**
  * Class which performs logging of whole application.
@@ -20,14 +22,9 @@ use SimpleHosting\LogLevel;
 class Logger{
 
     /**
-     * Minimal level of logs which will be logged.
+     * Settings of logger.
      */
-    private LogLevel $level;
-
-    /**
-     * Path to directory to which logs will be saved.
-     */
-    private string $path;
+    private readonly LoggerSettings $settings;
 
     /**
      * Flag, whether logger is none (so it will not do anything).
@@ -35,23 +32,54 @@ class Logger{
     private bool $isNone = false;
 
     /**
+     * Flag, whether log directory was checked.
+     */
+    private bool $dirChecked;
+
+    /**
+     * Formatter of logs for standard output.
+     */
+    private readonly LogFormatter $formatter;
+
+    /**
      * Creates logger which does nothing.
      * @return Logger Logger which does nothing.
      */
     public static function none(): Logger{
-        $reti = new Logger(LogLevel::ERROR, "");
+        $reti = new Logger(new LoggerSettings(
+            false, "", LogLevel::Error, false, false
+        ));
         $reti->isNone = true;
         return $reti;
     }
 
     /**
      * Creates new logger.
-     * @param LogLevel $level Minimal level of log which will be logged.
-     * @param string $path Path to directory where logs will be created.
+     * @param LoggerSettings $settings Settings of logger.
      */
-    public function __construct(LogLevel $level, string $path){
-        $this->level = $level;
-        $this->path = $path;
+    public function __construct(LoggerSettings $settings){
+        $this->settings = $settings;
+        $this->dirChecked = false;
+        $this->formatter = new LogFormatter();
+        if(!defined('STDOUT')) define('STDOUT', fopen('php://stdout', 'wb'));
+    }
+
+    /**
+     * Checks, whether log directory exists. If not, it will be created.
+     */
+    private function checkLogDir(): void{
+        if ($this->dirChecked == false){
+            $this->dirChecked = true;
+            if (is_dir($this->settings->getLogPath()) == false){
+                if (mkdir($this->settings->getLogPath(), 0777, true)){
+                    $this->info("Logger directory '" . $this->settings->getLogPath() . "' was created.");
+                }
+                else{
+                    $this->error("Logger directory '" . $this->settings->getLogPath() . "' cannot be created!");
+                }
+            }
+        }
+        
     }
 
     /**
@@ -59,7 +87,7 @@ class Logger{
      * @return string Path to file to which new log will be created.
      */
     private function getFilePath(): string{
-        return $this->path . DIRECTORY_SEPARATOR . date("Y_m_d") . ".log";
+        return $this->settings->getLogPath() . DIRECTORY_SEPARATOR . date("Y_m_d") . ".log";
     }
 
     /**
@@ -67,6 +95,7 @@ class Logger{
      * @param string $str String which will be written to log file.
      */
     private function writeString(string $str): void{
+        $this->checkLogDir();
         $path = $this->getFilePath();
         file_put_contents($path, $str, FILE_APPEND);
     }
@@ -100,12 +129,23 @@ class Logger{
     }
 
     /**
+     * Prints string to standard output.
+     * @param string $string String which will be printed to standard output.
+     */
+    private function printString(string $string): void{
+        if ($this->settings->getStdout() == true){
+            fwrite(\STDOUT, $string);
+        }
+    }
+
+    /**
      * Writes log to log file.
      * @param LogLevel $level Level of log.
      * @param string $message Message which will be logged.
      */
     private function writeLog(LogLevel $level, string $message): void{
         $this->writeString($this->getLogLine($level, $message));
+        $this->printString($this->formatter->format($level, $this->getLogLine($level, $message)));
     }
 
     /**
@@ -115,7 +155,7 @@ class Logger{
      *              FALSE otherwise.
      */
     private function canLog(LogLevel $level): bool{
-        return $this->isNone == false && $level >= $this->level;
+        return $this->isNone == false && $level >= $this->settings->getLogLevel() && $this->settings->getLog() == true;
     }
 
     /**
@@ -130,11 +170,19 @@ class Logger{
     }
 
     /**
+     * Performs new log in lowest level.
+     * @param string $message Message which will be logged.
+     */
+    public function low(string $message): void{
+        $this->log(LogLevel::Low, $message);
+    }
+
+    /**
      * Performs new log in base level.
      * @param string $message Message which will be logged.
      */
     public function base(string $message): void{
-        $this->log(LogLevel::BASE, $message);
+        $this->log(LogLevel::Base, $message);
     }
 
     /**
@@ -142,7 +190,7 @@ class Logger{
      * @param string $message Message which will be logged.
      */
     public function info(string $message): void{
-        $this->log(LogLevel::INFO, $message);
+        $this->log(LogLevel::Info, $message);
     }
 
     /**
@@ -150,7 +198,7 @@ class Logger{
      * @param string $message Message which will be logged.
      */
     public function warning(string $message): void{
-        $this->log(LogLevel::WARNING, $message);
+        $this->log(LogLevel::Warning, $message);
     }
 
     /**
@@ -158,7 +206,7 @@ class Logger{
      * @param string $message Message which will be logged.
      */
     public function error(string $message): void{
-        $this->log(LogLevel::ERROR, $message);
+        $this->log(LogLevel::Error, $message);
     }
 }
 

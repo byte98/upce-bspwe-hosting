@@ -1,0 +1,17 @@
+#
+# .htaccess
+# File modifinig behaviour of web server.
+#
+# Author: Jiri Skoda<jiri.skoda@student.upce.cz>
+#         Faculty of Electrical Engineering and Informatics
+#         University of Pardubice
+#         2024, Pardubice
+#
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ INDEX.PHP [L]
+</IfModule>
