@@ -112,11 +112,11 @@ class Router{
      */
     private function getRoute(string $path): ?Route{
         $reti = null;
+        $retiLen = PHP_INT_MIN;
         if (count($this->routes) > 0){
             foreach($this->routes as $route){
-                if ($route->matches($path)){
+                if ($route->matches($path) && $route->getLength() >= $retiLen){
                     $reti = $route;
-                    break;
                 }
             }
         }

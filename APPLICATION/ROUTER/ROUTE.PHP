@@ -109,6 +109,14 @@ class Route{
     public function getData(string $request): array{
         return PathUtils::getValues($this->path, $request);
     }
+
+    /**
+     * Gets length of path of route.
+     * @return int Integer representing length of route.
+     */
+    public function getLength(): int{
+        return strlen($this->path);
+    }
 }
 
 ?>
