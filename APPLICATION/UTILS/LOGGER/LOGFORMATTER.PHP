@@ -36,14 +36,16 @@ class LogFormatter{
             LogLevel::Base->toString() => LogFormatColor::WhiteBright->toString(),
             LogLevel::Info->toString() => LogFormatColor::BlueBright->toString(),
             LogLevel::Warning->toString() => LogFormatColor::YellowBright->toString(),
-            LogLevel::Error->toString() => LogFormatColor::RedBright->toString()
+            LogLevel::Error->toString() => LogFormatColor::RedBright->toString(),
+            LogLevel::Critical->toString() => LogFormatColor::RedBright->toString()
         ];
         $this->symbols = [
             LogLevel::Low->toString() => " ",
             LogLevel::Base->toString() => " ",
             LogLevel::Info->toString() => "ℹ️",
             LogLevel::Warning->toString() => "⚠️",
-            LogLevel::Error->toString() => "🛑"
+            LogLevel::Error->toString() => "🛑",
+            LogLevel::Critical->toString() => "📛"
         ];
 
     }

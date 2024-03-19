@@ -46,17 +46,23 @@ enum LogLevel{
     case Error;
 
     /**
+     * Log informing about error after program exits immediately.
+     */
+    case Critical;
+
+    /**
      * Gets string representation of log level.
      * @return string String representing log level.
      */
     public function toString(): string{
         $reti = "";
         switch($this){
-            case LogLevel::Low:     $reti = "LOW";     break;
-            case LogLevel::Base:    $reti = "BASE";    break;
-            case LogLevel::Info:    $reti = "INFO";    break;
-            case LogLevel::Warning: $reti = "WARNING"; break;
-            case LogLevel::Error:   $reti = "ERROR";   break;  
+            case LogLevel::Low:      $reti = "LOW";      break;
+            case LogLevel::Base:     $reti = "BASE";     break;
+            case LogLevel::Info:     $reti = "INFO";     break;
+            case LogLevel::Warning:  $reti = "WARNING";  break;
+            case LogLevel::Error:    $reti = "ERROR";    break;  
+            case LogLevel::Critical: $reti = "CRITICAL"; break;
         }
         return $reti;
     }
@@ -71,11 +77,12 @@ enum LogLevel{
     public static function fromString(string $str): ?LogLevel{
         $reti = NULL;
         switch(strtoupper(StringUtils::trim($str))){
-            case "LOW":     $reti = LogLevel::Low;     break;
-            case "BASE":    $reti = LogLevel::Base;    break;
-            case "INFO":    $reti = LogLevel::Info;    break;
-            case "WARNING": $reti = LogLevel::Warning; break;
-            case "ERROR":   $reti = LogLevel::Error;   break;
+            case "LOW":       $reti = LogLevel::Low;      break;
+            case "BASE":      $reti = LogLevel::Base;     break;
+            case "INFO":      $reti = LogLevel::Info;     break;
+            case "WARNING":   $reti = LogLevel::Warning;  break;
+            case "ERROR":     $reti = LogLevel::Error;    break;
+            case "CRITITCAL": $reti = LogLevel::Critical; break;
         }
         return $reti;
     }

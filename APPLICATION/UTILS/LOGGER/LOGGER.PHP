@@ -167,6 +167,9 @@ class Logger{
         if ($this->canLog($level)){
             $this->writeLog($level, $message);
         }
+        if ($level == LogLevel::Critical){
+            exit($message);
+        }
     }
 
     /**
@@ -207,6 +210,14 @@ class Logger{
      */
     public function error(string $message): void{
         $this->log(LogLevel::Error, $message);
+    }
+
+    /**
+     * Performs new log in critical level and then exits program.
+     * @param string $message Message which will be logged.
+     */
+    public function critical(string $message): void{
+        $this->log(LogLevel::Critical, $message);
     }
 }
 

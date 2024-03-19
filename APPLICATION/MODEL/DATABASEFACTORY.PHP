@@ -43,23 +43,32 @@ class DatabaseFactory{
      * @return string String used to connect to the database.
      */
     private static function getConnectionString(): string{
+        $hostname = DatabaseFactory::$connectionModel->getHost();
+        $database = DatabaseFactory::$connectionModel->getDatabase();
+        $username = DatabaseFactory::$connectionModel->getUsername();
+        $password = DatabaseFactory::$connectionModel->getPassword();
         return 
-            "host=" . DatabaseFactory::$connectionModel.getHost() . " " .
-            "dbname=" . DatabaseFactory::$connectionModel.getDatabase() . " " .
-            "user=" . DatabaseFactory::$connectionModel.getUsername() . " " .
-            "password=" . DatabaseFactory::$connectionModel.getPassword();
+            "host=" . $hostname . " " .
+            "dbname=" . $database . " " .
+            "user=" . $username . " " .
+            "password=" . $password;
     }
 
     /**
      * Gets conncection to the database.
      * @return \PgSql\Connection Connection to the database.
      */
-    public static function get(): \PgSql\Connection{
+    public static function get(): ?\PgSql\Connection{
         if (DatabaseFactory::$connection == NULL){
-            DatabaseFactory::$connection = pg_connect(DatabaseFactory::getConnectionString());
-            if ($connection == false){
-                Application::logger()->error("Connection to database failed!");
+            $test = pg_connect(DatabaseFactory::getConnectionString());
+            if ($test === false){
+                DatabaseFactory::$connection = NULL;
+                Application::logger()->critical("Connection to database failed!");
             }
+            else{
+                DatabaseFactory::$connection = $test;
+            }
+            
         }
         return DatabaseFactory::$connection;
     }
