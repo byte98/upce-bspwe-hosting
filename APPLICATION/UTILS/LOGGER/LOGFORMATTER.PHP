@@ -2,35 +2,35 @@
 
 //
 // LOGFORMATTER.PHP
-// File containing definition of utility used for formatting of logs.
+// File containing definition of utility used FOR formatting of logs.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering and Informatics
+//         Faculty of Electrical Engineering AND Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-namespace SimpleHosting\Utils\Logger;
+NAMESPACE SimpleHosting\Utils\Logger;
 
 /**
- * Class which provides utilities to format logs for standard output.
+ * CLASS which provides utilities to format logs FOR standard output.
  */
-class LogFormatter{
+CLASS LogFormatter{
 
     /**
      * Definitions of colors according to log levels.
      */
-    private readonly array $colors; 
+    PRIVATE readonly ARRAY $colors; 
 
     /**
      * Definitions of symbols according to log levels.
      */
-    private readonly array $symbols;
+    PRIVATE readonly ARRAY $symbols;
 
     /**
-     * Creates new formatter of logs for standard output.
+     * Creates NEW formatter of logs FOR standard output.
      */
-    public function __construct(){
+    PUBLIC FUNCTION __construct(){
         $this->colors = [
             LogLevel::Low->toString() => LogFormatColor::BlackBright->toString(),
             LogLevel::Base->toString() => LogFormatColor::WhiteBright->toString(),
@@ -49,13 +49,13 @@ class LogFormatter{
     }
 
     /**
-     * Formats log for standard output.
+     * Formats log FOR standard output.
      * @param LogLevel $level Level of log.
      * @param string $line Line representing whole log which should be printed out.
-     * @return string Formatted line which can be printed out.
+     * @RETURN string Formatted line which can be printed out.
      */
-    public function format(LogLevel $level, string $line): string{
-        return
+    PUBLIC FUNCTION format(LogLevel $level, string $line): string{
+        RETURN
             $this->colors[$level->toString()] .
             $this->symbols[$level->toString()] .
             " " .

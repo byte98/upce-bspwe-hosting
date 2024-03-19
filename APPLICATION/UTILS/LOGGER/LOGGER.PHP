@@ -5,76 +5,76 @@
 // File containing definition of logger utility of application.
 // 
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering and Informatics
+//         Faculty of Electrical Engineering AND Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-namespace SimpleHosting\Utils\Logger;
+NAMESPACE SimpleHosting\Utils\Logger;
 
-use SimpleHosting\Utils\Logger\LogLevel;
-use SimpleHosting\Utils\Logger\LoggerSettings;
-use SimpleHosting\Utils\Logger\LogFormatter;
+USE SimpleHosting\Utils\Logger\LogLevel;
+USE SimpleHosting\Utils\Logger\LoggerSettings;
+USE SimpleHosting\Utils\Logger\LogFormatter;
 
 /**
- * Class which performs logging of whole application.
+ * CLASS which performs logging of whole application.
  */
-class Logger{
+CLASS Logger{
 
     /**
      * Settings of logger.
      */
-    private readonly LoggerSettings $settings;
+    PRIVATE readonly LoggerSettings $settings;
 
     /**
-     * Flag, whether logger is none (so it will not do anything).
+     * Flag, whether logger is none (so it will not DO anything).
      */
-    private bool $isNone = false;
+    PRIVATE bool $isNone = false;
 
     /**
      * Flag, whether log directory was checked.
      */
-    private bool $dirChecked;
+    PRIVATE bool $dirChecked;
 
     /**
-     * Formatter of logs for standard output.
+     * Formatter of logs FOR standard output.
      */
-    private readonly LogFormatter $formatter;
+    PRIVATE readonly LogFormatter $formatter;
 
     /**
      * Creates logger which does nothing.
-     * @return Logger Logger which does nothing.
+     * @RETURN Logger Logger which does nothing.
      */
-    public static function none(): Logger{
-        $reti = new Logger(new LoggerSettings(
+    PUBLIC STATIC FUNCTION none(): Logger{
+        $reti = NEW Logger(NEW LoggerSettings(
             false, "", LogLevel::Error, false, false
         ));
         $reti->isNone = true;
-        return $reti;
+        RETURN $reti;
     }
 
     /**
-     * Creates new logger.
+     * Creates NEW logger.
      * @param LoggerSettings $settings Settings of logger.
      */
-    public function __construct(LoggerSettings $settings){
+    PUBLIC FUNCTION __construct(LoggerSettings $settings){
         $this->settings = $settings;
         $this->dirChecked = false;
-        $this->formatter = new LogFormatter();
-        if(!defined('STDOUT')) define('STDOUT', fopen('php://stdout', 'wb'));
+        $this->formatter = NEW LogFormatter();
+        IF(!defined('STDOUT')) define('STDOUT', fopen('php://stdout', 'wb'));
     }
 
     /**
-     * Checks, whether log directory exists. If not, it will be created.
+     * Checks, whether log directory exists. IF not, it will be created.
      */
-    private function checkLogDir(): void{
-        if ($this->dirChecked == false){
+    PRIVATE FUNCTION checkLogDir(): void{
+        IF ($this->dirChecked == false){
             $this->dirChecked = true;
-            if (is_dir($this->settings->getLogPath()) == false){
-                if (mkdir($this->settings->getLogPath(), 0777, true)){
+            IF (is_dir($this->settings->getLogPath()) == false){
+                IF (mkdir($this->settings->getLogPath(), 0777, true)){
                     $this->info("Logger directory '" . $this->settings->getLogPath() . "' was created.");
                 }
-                else{
+                ELSE{
                     $this->error("Logger directory '" . $this->settings->getLogPath() . "' cannot be created!");
                 }
             }
@@ -83,57 +83,57 @@ class Logger{
     }
 
     /**
-     * Gets path to file to which new log will be created.
-     * @return string Path to file to which new log will be created.
+     * Gets path to file to which NEW log will be created.
+     * @RETURN string Path to file to which NEW log will be created.
      */
-    private function getFilePath(): string{
-        return $this->settings->getLogPath() . DIRECTORY_SEPARATOR . date("Y_m_d") . ".log";
+    PRIVATE FUNCTION getFilePath(): string{
+        RETURN $this->settings->getLogPath() . DIRECTORY_SEPARATOR . date("Y_m_d") . ".log";
     }
 
     /**
      * Writes string to log file.
      * @param string $str String which will be written to log file.
      */
-    private function writeString(string $str): void{
+    PRIVATE FUNCTION writeString(string $str): void{
         $this->checkLogDir();
         $path = $this->getFilePath();
         file_put_contents($path, $str, FILE_APPEND);
     }
 
     /**
-     * Gets date in format used for logging.
-     * @return string String representing date used for logging.
+     * Gets date in format used FOR logging.
+     * @RETURN string String representing date used FOR logging.
      */
-    private function getDate(): string{
-        $now = new \DateTime();
-        return $now->format("dd.mm.YYYY HH:MM:SS.ss");
+    PRIVATE FUNCTION getDate(): string{
+        $now = NEW \DateTime();
+        RETURN $now->format("dd.mm.YYYY HH:MM:SS.ss");
     }
 
     /**
      * Gets header of log.
      * @param LogLevel $level Level of log.
-     * @return string String representing header of log.
+     * @RETURN string String representing header of log.
      */
-    private function getHeader(LogLevel $level): string{
-        return $this->getDate() . "[ " . $level->toString() . " ] ";
+    PRIVATE FUNCTION getHeader(LogLevel $level): string{
+        RETURN $this->getDate() . "[ " . $level->toString() . " ] ";
     }
 
     /**
      * Gets line which will be added to log file.
      * @param LogLevel $level Level of log.
      * @param string $message Message which will be logged.
-     * @return string String representing line which will be added to log file.
+     * @RETURN string String representing line which will be added to log file.
      */
-    private function getLogLine(LogLevel $level, string $message): string{
-        return $this->getHeader($level) . $message . "\n";
+    PRIVATE FUNCTION getLogLine(LogLevel $level, string $message): string{
+        RETURN $this->getHeader($level) . $message . "\n";
     }
 
     /**
      * Prints string to standard output.
      * @param string $string String which will be printed to standard output.
      */
-    private function printString(string $string): void{
-        if ($this->settings->getStdout() == true){
+    PRIVATE FUNCTION printString(string $string): void{
+        IF ($this->settings->getStdout() == true){
             fwrite(\STDOUT, $string);
         }
     }
@@ -143,7 +143,7 @@ class Logger{
      * @param LogLevel $level Level of log.
      * @param string $message Message which will be logged.
      */
-    private function writeLog(LogLevel $level, string $message): void{
+    PRIVATE FUNCTION writeLog(LogLevel $level, string $message): void{
         $this->writeString($this->getLogLine($level, $message));
         $this->printString($this->formatter->format($level, $this->getLogLine($level, $message)));
     }
@@ -151,61 +151,61 @@ class Logger{
     /**
      * Checks, whether log can be performed.
      * @param LogLevel $level Level of log.
-     * @return bool TRUE, if level is sufficient to be logged,
+     * @RETURN bool TRUE, IF level is sufficient to be logged,
      *              FALSE otherwise.
      */
-    private function canLog(LogLevel $level): bool{
-        return $this->isNone == false && $level >= $this->settings->getLogLevel() && $this->settings->getLog() == true;
+    PRIVATE FUNCTION canLog(LogLevel $level): bool{
+        RETURN $this->isNone == false && $level >= $this->settings->getLogLevel() && $this->settings->getLog() == true;
     }
 
     /**
-     * Performs new log.
+     * Performs NEW log.
      * @param LogLevel $level Level of log.
      * @param string $message Message which will be logged.
      */
-    public function log(LogLevel $level, string $message): void{
-        if ($this->canLog($level)){
+    PUBLIC FUNCTION log(LogLevel $level, string $message): void{
+        IF ($this->canLog($level)){
             $this->writeLog($level, $message);
         }
     }
 
     /**
-     * Performs new log in lowest level.
+     * Performs NEW log in lowest level.
      * @param string $message Message which will be logged.
      */
-    public function low(string $message): void{
+    PUBLIC FUNCTION low(string $message): void{
         $this->log(LogLevel::Low, $message);
     }
 
     /**
-     * Performs new log in base level.
+     * Performs NEW log in base level.
      * @param string $message Message which will be logged.
      */
-    public function base(string $message): void{
+    PUBLIC FUNCTION base(string $message): void{
         $this->log(LogLevel::Base, $message);
     }
 
     /**
-     * Performs new log in info level.
+     * Performs NEW log in info level.
      * @param string $message Message which will be logged.
      */
-    public function info(string $message): void{
+    PUBLIC FUNCTION info(string $message): void{
         $this->log(LogLevel::Info, $message);
     }
 
     /**
-     * Performs new log in warning level.
+     * Performs NEW log in warning level.
      * @param string $message Message which will be logged.
      */
-    public function warning(string $message): void{
+    PUBLIC FUNCTION warning(string $message): void{
         $this->log(LogLevel::Warning, $message);
     }
 
     /**
-     * Performs new log in error level.
+     * Performs NEW log in error level.
      * @param string $message Message which will be logged.
      */
-    public function error(string $message): void{
+    PUBLIC FUNCTION error(string $message): void{
         $this->log(LogLevel::Error, $message);
     }
 }

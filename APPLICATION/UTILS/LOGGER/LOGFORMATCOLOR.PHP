@@ -2,139 +2,139 @@
 
 // 
 // LOGFORMATCOLOR.PHP
-// File containing color definitions for logs.
+// File containing color definitions FOR logs.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering and Informatics
+//         Faculty of Electrical Engineering AND Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-namespace SimpleHosting\Utils\Logger;
+NAMESPACE SimpleHosting\Utils\Logger;
 
 /**
- * Enumeration of all available colors for standard output.
+ * Enumeration of all available colors FOR standard output.
  */
 enum LogFormatColor{
 
     /**
      * Black foreground color.
      */
-    case Black;
+    CASE Black;
     
     /**
      * Red foreground color.
      */
-    case Red;
+    CASE Red;
 
     /**
      * Green foreground color.
      */
-    case Green;
+    CASE Green;
 
     /**
      * Yellow foreground color.
      */
-    case Yellow;
+    CASE Yellow;
 
     /**
      * Blue foreground color.
      */
-    case Blue;
+    CASE Blue;
 
     /**
      * Magenta foreground color.
      */
-    case Magenta;
+    CASE Magenta;
 
     /**
      * Cyan foreground color.
      */
-    case Cyan;
+    CASE Cyan;
 
     /**
      * White (more like gray) foreground color.
      */
-    case White;
+    CASE White;
 
     /**
      * Bright black (gray) foreground color.
      */
-    case BlackBright;
+    CASE BlackBright;
 
     /**
      * Bright red foreground color.
      */
-    case RedBright;
+    CASE RedBright;
 
     /**
      * Bright green foreground color.
      */
-    case GreenBright;
+    CASE GreenBright;
 
     /**
      * Bright yellow foreground color.
      */
-    case YellowBright;
+    CASE YellowBright;
 
     /**
      * Bright blue foreground color.
      */
-    case BlueBright;
+    CASE BlueBright;
 
     /**
      * Bright magenta foreground color.
      */
-    case MagentaBright;
+    CASE MagentaBright;
 
     /**
      * Bright cyan foreground color.
      */
-    case CyanBright;
+    CASE CyanBright;
 
     /**
      * Bright white foreground color.
      */
-    case WhiteBright;
+    CASE WhiteBright;
 
     /**
      * Resets color to system defaults.
      */
-    case Reset;
+    CASE Reset;
 
     /**
      * Escape character.
      */
-    private const ESCAPE = "\x1B";
+    PRIVATE CONST ESCAPE = "\x1B";
 
     /**
      * Gets string representation of color ready to be printed.
      */
-    public function toString(): string{
+    PUBLIC FUNCTION toString(): string{
         $reti = LogFormatColor::ESCAPE;
         $suffix = "[0m;";
-        switch($this){
-            case LogFormatColor::Black:   $suffix = "[;30m"; break;
-            case LogFormatColor::Red:     $suffix = "[;31m"; break;
-            case LogFormatColor::Green:   $suffix = "[;32m"; break;
-            case LogFormatColor::Yellow:  $suffix = "[;33m"; break;
-            case LogFormatColor::Blue:    $suffix = "[;34m"; break;
-            case LogFormatColor::Magenta: $suffix = "[;35m"; break;
-            case LogFormatColor::Cyan:    $suffix = "[;36m"; break;
-            case LogFormatColor::White:   $suffix = "[;37m"; break;
+        SWITCH($this){
+            CASE LogFormatColor::Black:   $suffix = "[;30m"; BREAK;
+            CASE LogFormatColor::Red:     $suffix = "[;31m"; BREAK;
+            CASE LogFormatColor::Green:   $suffix = "[;32m"; BREAK;
+            CASE LogFormatColor::Yellow:  $suffix = "[;33m"; BREAK;
+            CASE LogFormatColor::Blue:    $suffix = "[;34m"; BREAK;
+            CASE LogFormatColor::Magenta: $suffix = "[;35m"; BREAK;
+            CASE LogFormatColor::Cyan:    $suffix = "[;36m"; BREAK;
+            CASE LogFormatColor::White:   $suffix = "[;37m"; BREAK;
 
-            case LogFormatColor::BlackBright:   $suffix = "[;90m"; break;
-            case LogFormatColor::RedBright:     $suffix = "[;91m"; break;
-            case LogFormatColor::GreenBright:   $suffix = "[;92m"; break;
-            case LogFormatColor::YellowBright:  $suffix = "[;93m"; break;
-            case LogFormatColor::BlueBright:    $suffix = "[;94m"; break;
-            case LogFormatColor::MagentaBright: $suffix = "[;95m"; break;
-            case LogFormatColor::CyanBright:    $suffix = "[;96m"; break;
-            case LogFormatColor::WhiteBright:   $suffix = "[;97m"; break;
+            CASE LogFormatColor::BlackBright:   $suffix = "[;90m"; BREAK;
+            CASE LogFormatColor::RedBright:     $suffix = "[;91m"; BREAK;
+            CASE LogFormatColor::GreenBright:   $suffix = "[;92m"; BREAK;
+            CASE LogFormatColor::YellowBright:  $suffix = "[;93m"; BREAK;
+            CASE LogFormatColor::BlueBright:    $suffix = "[;94m"; BREAK;
+            CASE LogFormatColor::MagentaBright: $suffix = "[;95m"; BREAK;
+            CASE LogFormatColor::CyanBright:    $suffix = "[;96m"; BREAK;
+            CASE LogFormatColor::WhiteBright:   $suffix = "[;97m"; BREAK;
 
-            case LogFormatColor::Reset: $suffix = "[0m"; break;
+            CASE LogFormatColor::Reset: $suffix = "[0m"; BREAK;
         }
-        return $reti . $suffix;
+        RETURN $reti . $suffix;
     }
 }
 

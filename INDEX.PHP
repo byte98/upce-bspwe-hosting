@@ -5,12 +5,12 @@
 // File containing entry point of whole application.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering and Informatics
+//         Faculty of Electrical Engineering AND Informatics
 //         University of Pardubice
 //
 
-require_once("APPLICATION/APPLICATION.PHP");
-use SimpleHosting\Application;
+REQUIRE_ONCE("APPLICATION/APPLICATION.PHP");
+USE SimpleHosting\Application;
 
 Application::main();
 

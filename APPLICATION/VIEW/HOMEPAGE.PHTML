@@ -5,7 +5,7 @@
 // File containing view of home page.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering and Informatics
+//         Faculty of Electrical Engineering AND Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
@@ -23,8 +23,8 @@
     <p>
         <form>
             <select>
-                <?php foreach($_TEMP["tlds"] as $tld){ ?>
-                <option value="<?php echo $tld;?>"><?php echo $tld;?></option>
+                <?php FOREACH($_TEMP["tlds"] AS $tld){ ?>
+                <option value="<?php ECHO $tld;?>"><?php ECHO $tld;?></option>
                 <?php }?>
             </select>
         </form>

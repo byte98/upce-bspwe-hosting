@@ -5,60 +5,60 @@
 // File containing data definition of top level domains.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering and Informatics
+//         Faculty of Electrical Engineering AND Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-namespace SimpleHosting\Model\DREG;
+NAMESPACE SimpleHosting\Model\DREG;
 
 /**
- * Class representing top level domain.
+ * CLASS representing top level domain.
  */
-class TLD{
+CLASS TLD{
 
     /**
      * Identifier of top level domain in database.
      */
-    private int $id;
+    PRIVATE int $id;
 
     /**
      * Name of top level domain.
      */
-    private string $name;
+    PRIVATE string $name;
 
     /**
-     * Creates new top level domain.
+     * Creates NEW top level domain.
      * @param int $id Identifier of top level domain in database.
      * @param string $name Name of top level domain.
      */
-    public function __construct(int $id, string $name){
+    PUBLIC FUNCTION __construct(int $id, string $name){
         $this->id = $id;
         $this->name = $name;
     }
 
     /**
      * Gets identifier of top level domain in database.
-     * @return int Identifier of top level domain in database.
+     * @RETURN int Identifier of top level domain in database.
      */
-    public function getId(): int{
-        return $this->id;
+    PUBLIC FUNCTION getId(): int{
+        RETURN $this->id;
     }
 
     /**
-     * Sets new name of top level domain.
-     * @param string $name New name of top level domain.
+     * Sets NEW name of top level domain.
+     * @param string $name NEW name of top level domain.
      */
-    public function setName(string $name){
+    PUBLIC FUNCTION setName(string $name){
         $this->name = $name;
     }
 
     /**
      * Gets name of top level domain.
-     * @return string Name of top level domain.
+     * @RETURN string Name of top level domain.
      */
-    public function getName(): string{
-        return $this->name;
+    PUBLIC FUNCTION getName(): string{
+        RETURN $this->name;
     }
 
 }

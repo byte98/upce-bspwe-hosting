@@ -5,37 +5,37 @@
 // File containing definition of single route of application.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering and Informatics
+//         Faculty of Electrical Engineering AND Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-namespace SimpleHosting\Router;
+NAMESPACE SimpleHosting\Router;
 
-use SimpleHosting\Controller\Controller;
-use SimpleHosting\Utils\PathUtils;
+USE SimpleHosting\Controller\Controller;
+USE SimpleHosting\Utils\PathUtils;
 
 /**
- * Class representing single route of application.
+ * CLASS representing single route of application.
  */
-class Route{
+CLASS Route{
 
     /**
      * Path of application.
      */
-    private string $path;
+    PRIVATE string $path;
 
     /**
      * Target of route.
      */
-    private Controller $target;
+    PRIVATE Controller $target;
 
     /**
-     * Creates new route.
+     * Creates NEW route.
      * @param string $path Path of application
      * @param Controller $target Target of route.
      */
-    public function __construct(string $path, Controller $target){
+    PUBLIC FUNCTION __construct(string $path, Controller $target){
         $this->path = $path;
         $this->target = $target;
     }
@@ -43,79 +43,79 @@ class Route{
     /**
      * Checks, whether path matches route.
      * @param string $path Path of application.
-     * @return bool TRUE if path matches route,
+     * @RETURN bool TRUE IF path matches route,
      *              FALSE otherwise.
      */
-    public function matches(string $path): bool{
+    PUBLIC FUNCTION matches(string $path): bool{
         $reti = false;
         $parts = explode("/", $path);
         $rparts = explode("/", $this->path);
-        if (count($parts) == count($rparts)){
+        IF (count($parts) == count($rparts)){
             $reti = true;
-            for($i = 0; $i < count($parts); $i++){
+            FOR($i = 0; $i < count($parts); $i++){
                 $part = $parts[$i];
                 $rpart = $rparts[$i];
-                if (PathUtils::isPlaceholder($rpart)){ 
+                IF (PathUtils::isPlaceholder($rpart)){ 
                     // In route definititon, there is placeholder.
-                    // So, type is parsed from definition and then
+                    // So, type is parsed from definition AND then
                     // checked against actual value in path.
                     $ptype = PathUtils::getPlaceholderType($rpart);
-                    if ($ptype !== false){
+                    IF ($ptype !== false){
                         $reti = $ptype->valueMatches($part);
-                        if ($reti == false){
-                            break;
+                        IF ($reti == false){
+                            BREAK;
                         }
                     }
-                    else{
+                    ELSE{
                         Application::logger()->error("Cannot get type of placeholder '" . $rpart . "' (path: " . $this->path . ")");
                         $reti = false;
-                        break;
+                        BREAK;
                     }
                 }
-                else{
+                ELSE{
                     // There is no placeholder; just check strings.
                     $reti = ($part == $rpart);
-                    if ($reti == false){
-                        break;
+                    IF ($reti == false){
+                        BREAK;
                     }
                 }
             }
         }
-        return $reti;
+        RETURN $reti;
     }
 
     /**
      * Checks, whether path is equal to path of route.
      * @param string $path Path which will be checked.
-     * @return bool TRUE if path is equal to path of route,
+     * @RETURN bool TRUE IF path is equal to path of route,
      *              FALSE otherwise.
      */
-    public function equals(string $path): bool{
-        return $this->path == $path;
+    PUBLIC FUNCTION equals(string $path): bool{
+        RETURN $this->path == $path;
     }
 
     /**
      * Gets target of route.
-     * @return Controller Controller which is target of route.
+     * @RETURN Controller Controller which is target of route.
      */
-    public function getTarget(): Controller{
-        return $this->target;
+    PUBLIC FUNCTION getTarget(): Controller{
+        RETURN $this->target;
     }
 
     /**
      * Gets data from request.
      * @param string $request Requested url.
      */
-    public function getData(string $request): array{
-        return PathUtils::getValues($this->path, $request);
+    PUBLIC FUNCTION getData(string $request): ARRAY{
+        RETURN PathUtils::getValues($this->path, $request);
     }
 
     /**
      * Gets length of path of route.
-     * @return int Integer representing length of route.
+     * @RETURN int Integer representing length of route.
      */
-    public function getLength(): int{
-        return strlen($this->path);
+    PUBLIC FUNCTION getLength(): int{
+        RETURN strlen($this->path);
     }
 }
 
