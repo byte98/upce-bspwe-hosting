@@ -5,25 +5,25 @@
 // File containing utilities to work with strings.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Utils;
+namespace SimpleHosting\Utils;
 
 /**
- * CLASS which holds some utility functions to work with strings.
+ * Class which holds some utility functions to work with strings.
  */
-CLASS StringUtils{
+class StringUtils{
 
     /**
      * Trims string out of white space characters.
      * @param string $string String which will be trimmed.
-     * @RETURN string String without white space characters.
+     * @return string String without white space characters.
      */
-    PUBLIC STATIC FUNCTION trim(string $string): string{
-        RETURN preg_replace('/\s+/', '', $string);
+    public static function trim(string $string): string{
+        return preg_replace('/\s+/', '', $string);
     }
 }
 

@@ -5,67 +5,67 @@
 // File containing definition of manager of configuration of application.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting;
+namespace SimpleHosting;
 
-USE SimpleHosting\Model\ConnectionModel;
-USE SimpleHosting\Utils\Logger\LoggerSettings;
-USE SimpleHosting\Utils\Logger\LogLevel;
+use SimpleHosting\Model\ConnectionModel;
+use SimpleHosting\Utils\Logger\LoggerSettings;
+use SimpleHosting\Utils\Logger\LogLevel;
 
 /**
- * CLASS which manages configuration of application.
+ * Class which manages configuration of application.
  */
-CLASS Configuration{
+class Configuration{
 
     /**
      * Path to file with configuration.
      */
-    PRIVATE string $confFile;
+    private string $confFile;
 
     /**
      * Settings of logger.
      */
-    PRIVATE LoggerSettings $loggerSettings;
+    private LoggerSettings $loggerSettings;
 
     /**
-     * Flag, whether PHP errors should be visible OR not.
+     * Flag, whether PHP errors should be visible or not.
      */
-    PRIVATE bool $PHPErrors = false;
+    private bool $PHPErrors = false;
 
     /**
      * Model of connection to the database.
      */
-    PRIVATE ConnectionModel $connection;
+    private ConnectionModel $connection;
 
     /**
      * Routing table.
      */
-    PRIVATE ARRAY $routes;
+    private array $routes;
 
     /**
-     * Creates NEW manager of configuration.
+     * Creates new manager of configuration.
      * @param string $confFile Path to YAML file with configuration.
      */
-    PUBLIC FUNCTION __construct(string $confFile){
+    public function __construct(string $confFile){
         $this->confFile = $confFile;
-        $this->loggerSettings = NEW LoggerSettings(
+        $this->loggerSettings = new LoggerSettings(
             true, "./logs/", LogLevel::Warning, false, false);
-        $this->connection = NEW ConnectionModel("", "", "", "");
+        $this->connection = new ConnectionModel("", "", "", "");
         $this->readFile();
     }
 
     /**
      * Reads configuration from file.
      */
-    PRIVATE FUNCTION readFile(): void{
+    private function readFile(): void{
         $conf = \yaml_parse_file($this->confFile);
-        IF ($conf !== false)
+        if ($conf !== false)
         {
-            IF (array_key_exists("PHPErrors", $conf) && gettype($conf["PHPErrors"]) == "boolean"){$this->PHPErrors = $conf["PHPErrors"];}
+            if (array_key_exists("PHPErrors", $conf) && gettype($conf["PHPErrors"]) == "boolean"){$this->PHPErrors = $conf["PHPErrors"];}
             $this->readLogger($conf);
             $this->readConnection($conf);
             $this->readRoutes($conf);
@@ -74,22 +74,22 @@ CLASS Configuration{
 
     /**
      * Reads logger settings.
-     * @param ARRAY $conf Parsed configuration from file.
+     * @param array $conf Parsed configuration from file.
      */
-    PRIVATE FUNCTION readLogger(ARRAY $conf){
+    private function readLogger(array $conf){
         $log = $this->loggerSettings->getLog();
         $logDir = $this->loggerSettings->getLogPath();
         $logLevel = $this->loggerSettings->getLogLevel();
         $logStdout = $this->loggerSettings->getStdout();
         $logUnicode = $this->loggerSettings->getUnicode();
 
-        IF (array_key_exists("Log", $conf) && gettype($conf["Log"]) == "boolean"){$log = $conf["Log"];}
-        IF (array_key_exists("LogPath", $conf) && gettype($conf["LogPath"]) == "string"){$logDir = $conf["LogPath"];}
-        IF (array_key_exists("LogLevel", $conf) && gettype($conf["LogLevel"]) == "string" && LogLevel::fromString($conf["LogLevel"]) != NULL){$logLevel = LogLevel::fromString($conf["LogLevel"]);}
-        IF (array_key_exists("LogStdout", $conf) && gettype($conf["LogStdout"]) == "boolean"){$logStdout = $conf["LogStdout"];}
-        IF (array_key_exists("LogUnicode", $conf) && gettype($conf["LogUnicode"]) == "boolean"){$logUnicode = $conf["LogUnicode"];}
+        if (array_key_exists("Log", $conf) && gettype($conf["Log"]) == "boolean"){$log = $conf["Log"];}
+        if (array_key_exists("LogPath", $conf) && gettype($conf["LogPath"]) == "string"){$logDir = $conf["LogPath"];}
+        if (array_key_exists("LogLevel", $conf) && gettype($conf["LogLevel"]) == "string" && LogLevel::fromString($conf["LogLevel"]) != NULL){$logLevel = LogLevel::fromString($conf["LogLevel"]);}
+        if (array_key_exists("LogStdout", $conf) && gettype($conf["LogStdout"]) == "boolean"){$logStdout = $conf["LogStdout"];}
+        if (array_key_exists("LogUnicode", $conf) && gettype($conf["LogUnicode"]) == "boolean"){$logUnicode = $conf["LogUnicode"];}
 
-        $this->loggerSettings = NEW LoggerSettings(
+        $this->loggerSettings = new LoggerSettings(
             $log, $logDir, $logLevel, $logStdout, $logUnicode
         );
     }
@@ -97,16 +97,16 @@ CLASS Configuration{
 
     /**
      * Reads connection information from file.
-     * @param ARRAY $conf Parsed configuration from file.
+     * @param array $conf Parsed configuration from file.
      */
-    PRIVATE FUNCTION readConnection(ARRAY $conf): void{
-        IF (
+    private function readConnection(array $conf): void{
+        if (
             array_key_exists("DatabaseHost", $conf) && gettype($conf["DatabaseHost"]) == "string" &&
             array_key_exists("DatabaseName", $conf) && gettype($conf["DatabaseName"]) == "string" &&
             array_key_exists("DatabaseUser", $conf) && gettype($conf["DatabaseUser"]) == "string" &&
             array_key_exists("DatabasePassword", $conf) && gettype($conf["DatabasePassword"]) == "string"
         ){
-            $this->connection = NEW ConnectionModel(
+            $this->connection = new ConnectionModel(
                 $conf["DatabaseHost"],
                 $conf["DatabaseName"],
                 $conf["DatabaseUser"],
@@ -117,47 +117,47 @@ CLASS Configuration{
 
     /**
      * Reads routes form configuration file.
-     * @param ARRAY $conf Parsed configuration from file.
+     * @param array $conf Parsed configuration from file.
      */
-    PRIVATE FUNCTION readRoutes(ARRAY $conf): void{
-        IF (array_key_exists("Routes", $conf) && gettype($conf["Routes"]) == "ARRAY"){
+    private function readRoutes(array $conf): void{
+        if (array_key_exists("Routes", $conf) && gettype($conf["Routes"]) == "array"){
             $this->routes = $conf["Routes"];
         }
     }
 
     /**
      * Gets settings of logger.
-     * @RETURN LoggerSettings Settings of logger.
+     * @return LoggerSettings Settings of logger.
      */
-    PUBLIC FUNCTION getLoggerSettings(): LoggerSettings{
-        RETURN $this->loggerSettings;
+    public function getLoggerSettings(): LoggerSettings{
+        return $this->loggerSettings;
     }
 
     /**
-     * Gets flag, whether PHP errors should be visible OR not.
-     * @RETURN bool TRUE, IF PHP errors should be visible,
+     * Gets flag, whether PHP errors should be visible or not.
+     * @return bool TRUE, if PHP errors should be visible,
      *              FALSE otherwise.
      */
-    PUBLIC FUNCTION getPHPErrors(): bool{
-        RETURN $this->PHPErrors;
+    public function getPHPErrors(): bool{
+        return $this->PHPErrors;
     }
 
     /**
      * Gets connection model to the database.
-     * @RETURN ConnectionModel Model of connection to the database.
+     * @return ConnectionModel Model of connection to the database.
      */
-    PUBLIC FUNCTION getConnection(): ConnectionModel{
-        RETURN $this->connection;  
+    public function getConnection(): ConnectionModel{
+        return $this->connection;  
     }
 
     /**
      * Gets routes from configuration file.
-     * @RETURN ARRAY Routes from configuration file,
-     *               where keys are paths AND values are names
+     * @return array Routes from configuration file,
+     *               where keys are paths and values are names
      *               of classes.
      */
-    PUBLIC FUNCTION getRoutes(): ARRAY{
-        RETURN $this->routes;
+    public function getRoutes(): array{
+        return $this->routes;
     }
 
 }

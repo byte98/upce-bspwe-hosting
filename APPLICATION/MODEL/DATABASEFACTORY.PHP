@@ -2,48 +2,48 @@
 
 //
 // DATABASEFACTORY.PHP
-// File containing factory FOR database connection.
+// File containing factory for database connection.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Model;
+namespace SimpleHosting\Model;
 
-USE SimpleHosting\Application;
-USE SimpleHosting\Model\ConnectionModel;
+use SimpleHosting\Application;
+use SimpleHosting\Model\ConnectionModel;
 
 /**
- * CLASS which provides connections to the database.
+ * Class which provides connections to the database.
  */
-CLASS DatabaseFactory{
+class DatabaseFactory{
 
     /**
      * Model of connection to the database.
      */
-    PRIVATE STATIC ConnectionModel $connectionModel;
+    private static ConnectionModel $connectionModel;
 
     /**
      * Actual connection to the database.
      */
-    PRIVATE STATIC ?\PgSql\Connection $connection = NULL;
+    private static ?\PgSql\Connection $connection = NULL;
 
     /**
      * Sets model of connection to the database.
-     * @param ConnectionModel $connectionModel NEW model of connection to the database.
+     * @param ConnectionModel $connectionModel New model of connection to the database.
      */
-    PUBLIC STATIC FUNCTION setModel(ConnectionModel $connectionModel){
+    public static function setModel(ConnectionModel $connectionModel){
         DatabaseFactory::$connectionModel = $connectionModel;
     }
 
     /**
      * Gets connection string.
-     * @RETURN string String used to connect to the database.
+     * @return string String used to connect to the database.
      */
-    PRIVATE STATIC FUNCTION getConnectionString(): string{
-        RETURN 
+    private static function getConnectionString(): string{
+        return 
             "host=" . DatabaseFactory::$connectionModel.getHost() . " " .
             "dbname=" . DatabaseFactory::$connectionModel.getDatabase() . " " .
             "user=" . DatabaseFactory::$connectionModel.getUsername() . " " .
@@ -52,23 +52,23 @@ CLASS DatabaseFactory{
 
     /**
      * Gets conncection to the database.
-     * @RETURN \PgSql\Connection Connection to the database.
+     * @return \PgSql\Connection Connection to the database.
      */
-    PUBLIC STATIC FUNCTION get(): \PgSql\Connection{
-        IF (DatabaseFactory::$connection == NULL){
+    public static function get(): \PgSql\Connection{
+        if (DatabaseFactory::$connection == NULL){
             DatabaseFactory::$connection = pg_connect(DatabaseFactory::getConnectionString());
-            IF ($connection == false){
+            if ($connection == false){
                 Application::logger()->error("Connection to database failed!");
             }
         }
-        RETURN DatabaseFactory::$connection;
+        return DatabaseFactory::$connection;
     }
 
     /**
      * Closes connection to the database.
      */
-    PUBLIC STATIC FUNCTION close(): void{
-        IF (DatabaseFactory::$connection != NULL){
+    public static function close(): void{
+        if (DatabaseFactory::$connection != NULL){
             pg_close(DatabaseFactory::$connection);
         }
     }

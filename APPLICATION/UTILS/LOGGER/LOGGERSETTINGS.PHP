@@ -5,54 +5,54 @@
 # File which contains definition of settings of logger.
 #
 # Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-#         Faculty of Electrical Engineering AND Informatics
+#         Faculty of Electrical Engineering and Informatics
 #         University of Pardubice
 #         2024, Pardubice
 #
 
-NAMESPACE SimpleHosting\Utils\Logger;
+namespace SimpleHosting\Utils\Logger;
 
-USE SimpleHosting\Utils\Logger\LogLevel;
+use SimpleHosting\Utils\Logger\LogLevel;
 
 /**
- * CLASS which contains settings of logger.
+ * Class which contains settings of logger.
  */
-CLASS LoggerSettings{
+class LoggerSettings{
 
     /**
      * Flag, whether application should create logs.
      */
-    PRIVATE readonly bool $log;
+    private readonly bool $log;
 
     /**
      * Path to directory to which logs will be created.
      */
-    PRIVATE readonly string $path;
+    private readonly string $path;
 
     /**
      * Minimal level of logs which will be logged.
      */
-    PRIVATE readonly LogLevel $logLevel;
+    private readonly LogLevel $logLevel;
 
     /**
      * Flag, whether logs should be also printed to standard output.
      */
-    PRIVATE readonly bool $stdout;
+    private readonly bool $stdout;
 
     /**
      * Flag, whether standard output supports unicode.
      */
-    PRIVATE readonly bool $unicode;
+    private readonly bool $unicode;
 
     /**
-     * Creates NEW settings of logger.
+     * Creates new settings of logger.
      * @param bool $log Flag, whether application should create logs.
      * @param string $path Path to directory to which logs will be created.
      * @param LogLevel $logLevel Minimal level of logs which will be logged.
      * @param bool $stdout Flag, whether logs should be also printed to standard output.
      * @param bool $unicode Flag, whether standard output supports unicode.
      */
-    PUBLIC FUNCTION __construct(
+    public function __construct(
         bool $log,
         string $path,
         LogLevel $logLevel,
@@ -69,36 +69,36 @@ CLASS LoggerSettings{
 
     /**
      * Gets flag, whether application should create logs.
-     * @RETURN bool TRUE, IF application should create logs,
+     * @return bool TRUE, if application should create logs,
      *              FALSE otherwise.
      */
-    PUBLIC FUNCTION getLog(): bool { RETURN $this->log; }
+    public function getLog(): bool { return $this->log; }
 
     /**
      * Gets path to directory to which logs will be created.
-     * @RETURN string Path to directory to which logs will be created.
+     * @return string Path to directory to which logs will be created.
      */
-    PUBLIC FUNCTION getLogPath(): string { RETURN $this->path; }
+    public function getLogPath(): string { return $this->path; }
 
     /**
      * Gets minimal level of logs which will be logged.
-     * @RETURN LogLevel Minimal level of logs which will be logged.
+     * @return LogLevel Minimal level of logs which will be logged.
      */
-    PUBLIC FUNCTION getLogLevel(): LogLevel { RETURN $this->logLevel; }
+    public function getLogLevel(): LogLevel { return $this->logLevel; }
 
     /**
      * Gets flag, whether logs should be also printed to standard output.
-     * @RETURN bool TRUE, IF logs should be also printed to standard output,
+     * @return bool TRUE, if logs should be also printed to standard output,
      *              FALSE otherwise.
      */
-    PUBLIC FUNCTION getStdout(): bool { RETURN $this->stdout; }
+    public function getStdout(): bool { return $this->stdout; }
 
     /**
      * Gets flag, whether standard output supports unicode.
-     * @RETURN bool TRUE, IF standard output supports unicode,
+     * @return bool TRUE, if standard output supports unicode,
      *              FALSE otherwise.
      */
-    PUBLIC FUNCTION getUnicode(): bool { RETURN $this->unicode; }
+    public function getUnicode(): bool { return $this->unicode; }
 }
 
 ?>

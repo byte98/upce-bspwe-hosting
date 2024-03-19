@@ -5,42 +5,42 @@
 // File containing data definition of domain.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Parubice
 //
 
-NAMESPACE SimpleHosting\Model\DREG;
+namespace SimpleHosting\Model\DREG;
 
-USE SimpleHosting\Model\DREG\TLD;
+use SimpleHosting\Model\DREG\TLD;
 
 /**
- * CLASS representing one domain name.
+ * Class representing one domain name.
  */
-CLASS Domain{
+class Domain{
 
     /**
      * Identifier of domain in database.
      */
-    PRIVATE int $id;
+    private int $id;
 
     /**
      * Name of domain.
      */
-    PRIVATE string $name;
+    private string $name;
 
     /**
      * TLD to which is domain associated to.
      */
-    PRIVATE TLD $tld;
+    private TLD $tld;
 
     /**
-     * Creates NEW domain.
+     * Creates new domain.
      * @param int $id Identifier of domain in database.
      * @param string $name Name of domain.
      * @param TLD $tld TLD to which is domain associated to.
      */
-    PUBLIC FUNCTION __construct(int $id, string $name, TLD $tld){
+    public function __construct(int $id, string $name, TLD $tld){
         $this->id = $id;
         $this->name = $name;
         $this->tld = $tld;
@@ -48,41 +48,41 @@ CLASS Domain{
 
     /**
      * Gets identifier of domain in database.
-     * @RETURN int Identifier of domain in database.
+     * @return int Identifier of domain in database.
      */
-    PUBLIC FUNCTION getId(): int{
-        RETURN $this->id;
+    public function getId(): int{
+        return $this->id;
     }
 
     /**
      * Gets name of domain.
-     * @RETURN string Name of domain.
+     * @return string Name of domain.
      */
-    PUBLIC FUNCTION getName(): string{
-        RETURN $this->name;
+    public function getName(): string{
+        return $this->name;
     }
 
     /**
      * Sets name of domain.
-     * @param string $name NEW name of domain.
+     * @param string $name New name of domain.
      */
-    PUBLIC FUNCTION setName(string $name): void{
+    public function setName(string $name): void{
         $this->name = $name;
     }
 
     /**
      * Gets TLD to which is domain associated to.
-     * @RETURN TLD TLD to which is domain associated to.
+     * @return TLD TLD to which is domain associated to.
      */
-    PUBLIC FUNCTION getTLD(): TLD{
-        RETURN $this->tld;
+    public function getTLD(): TLD{
+        return $this->tld;
     }
 
     /**
      * Sets TLD to which is domain associated to.
-     * @param TLD $tld NEW TLD to which is domain associated to.
+     * @param TLD $tld New TLD to which is domain associated to.
      */
-    PUBLIC FUNCTION setTLD(TLD $tld): void{
+    public function setTLD(TLD $tld): void{
         $this->tld = $tld;
     }
 

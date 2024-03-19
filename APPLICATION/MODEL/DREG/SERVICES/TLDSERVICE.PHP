@@ -5,123 +5,123 @@
 // File containing service functions to work with top level domains.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Model\DREG\Services;
+namespace SimpleHosting\Model\DREG\Services;
 
-USE SimpleHosting\Application;
-USE SimpleHosting\Model\DREG\TLD;
-USE SimpleHosting\Model\DatabaseFactory;
+use SimpleHosting\Application;
+use SimpleHosting\Model\DREG\TLD;
+use SimpleHosting\Model\DatabaseFactory;
 
 /**
- * CLASS which contains service functions to work with top level domains.
+ * Class which contains service functions to work with top level domains.
  */
-CLASS TLDService{
+class TLDService{
     
     /**
-     * Creates NEW top level domain.
+     * Creates new top level domain.
      * @param string $name Name of top level domain.
-     * @RETURN ?TLD NEW top level domain,
-     *              OR NULL IF top level domain couldn't be created.
+     * @return ?TLD New top level domain,
+     *              or NULL if top level domain couldn't be created.
      */
-    PUBLIC STATIC FUNCTION create(string $name): ?TLD{
+    public static function create(string $name): ?TLD{
         $reti = NULL;
         $conn = DatabaseFactory::get();
         $name = pg_escape_string($conn, $name);
         $query = "INSERT INTO DREG_TLDS (name) VALUES ('$name') RETURNING id";
         Application::logger()->base("Performing query " . $query);
         $result = pg_query($conn, $query);
-        IF ($result){
+        if ($result){
             $row = pg_fetch_assoc($result);
             $id = $row["id"];
-            $reti = NEW TLD($id, $name);
+            $reti = new TLD($id, $name);
             Application::logger()->info("TLD '" . $name . "' has been created!");
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Reads all available top level domains.
-     * @RETURN ARRAY ARRAY with all available top level domains
+     * @return array Array with all available top level domains
      */
-    PUBLIC STATIC FUNCTION read(): ARRAY{
-        $reti = ARRAY();
+    public static function read(): array{
+        $reti = array();
         $conn = DatabaseFactory::get();
         $query = "SELECT * FROM DREG_TLDS";
         Application::logger()->base("Performing query " . $query);
         $result = pg_query($conn, $query);
-        IF ($result){
-            WHILE ($row = pg_fetch_assoc($result)) {
-                array_push($reti, NEW TLD($row["id"], $row["name"]));
+        if ($result){
+            while ($row = pg_fetch_assoc($result)) {
+                array_push($reti, new TLD($row["id"], $row["name"]));
             }
         }
-        ELSE{
+        else{
             Application::logger()->error("Cannot read TLDs.!");
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Reads top level domain by its identifier.
      * @param int $id Identifier of top level domain.
-     * @RETURN ?TLD Top level domain,
-     *              OR NULL IF such top level domain does not exists.
+     * @return ?TLD Top level domain,
+     *              or NULL if such top level domain does not exists.
      */
-    PUBLIC STATIC FUNCTION readById(int $id): ?TLD{
+    public static function readById(int $id): ?TLD{
         $reti = NULL;
         $conn = DatabaseFactory::get();
         $query = "SELECT * FROM DREG_TLDS WHERE id=$id";
         Application::logger()->base("Performing query " . $query);
         $result = pg_query($conn, $query);
-        IF ($result){
+        if ($result){
             $row = pg_fetch_assoc($result);
-            $reti = NEW TLD($row["id"], $row["name"]);
+            $reti = new TLD($row["id"], $row["name"]);
         }
-        ELSE
+        else
         {
             Application::logger()->warning("Cannot find TLD with id $id");
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Reads top level domain by its name.
      * @param string $name Name of top level domain.
-     * @RETURN ?TLD Top level domain,
-     *              OR NULL IF such top level domain does not exists.
+     * @return ?TLD Top level domain,
+     *              or NULL if such top level domain does not exists.
      */
-    PUBLIC STATIC FUNCTION readByName(string $name): ?TLD{
+    public static function readByName(string $name): ?TLD{
         $reti = NULL;
         $conn = DatabaseFactory::get();
         $query = "SELECT * FROM DREG_TLDS WHERE name='" . pg_escape_string($conn, $name) . "'";
         Application::logger()->base("Performing query ". $query);
         $result = pg_query($conn, $query);
-        IF ($result){
+        if ($result){
             $row = pg_fetch_assoc($result);
-            $reti = NEW TLD($row["id"], $row["name"]);
+            $reti = new TLD($row["id"], $row["name"]);
         }
-        ELSE{
+        else{
             Application::logger()->info("Cannot find TLD with name $name");
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Updates top level domain.
      * @param TLD $tld Top level domain which will be updated.
      */
-    PUBLIC STATIC FUNCTION update(TLD $tld): void{
+    public static function update(TLD $tld): void{
         $conn = DatabaseFactory::get();
         $query = "UPDATE DREG_TLDS SET name='" . pg_escape_string($conn, $tld->getName()) . "' WHERE id=" . $tld->getId();
         Application::logger()->base("Performing query " . $query);
         $result = pg_query( $conn, $query);
-        IF ($result){
+        if ($result){
             Application::logger()->info("TLD '" . $tld->getName() . "' has been updated.");
         }
-        ELSE{
+        else{
             Application::logger()->error("Update of TLD '" . $tld->getName() . "' failed!");
         }
     }
@@ -130,14 +130,14 @@ CLASS TLDService{
      * Deletes top level domain.
      * @param TLD $tld Top level domain which will be deleted.
      */
-    PUBLIC STATIC FUNCTION delete(TLD $tld): void{
+    public static function delete(TLD $tld): void{
         $conn = DatabaseFactory::get();
         $query = "DELETE FROM DREG_TLDS WHERE id=" . $tld->getId();
         $result = pg_query( $conn, $query);
-        IF ($result){
+        if ($result){
             Application::logger()->info("TLD '" . $tld->getName() . "' has been deleted.");
         }
-        ELSE{
+        else{
             Application::logger()->error("Delete of TLD '". $tld->getName() . "' failed!");
         }
     }

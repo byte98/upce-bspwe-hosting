@@ -5,41 +5,41 @@
 // File containing definition of controller of homepage of application.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Controller;
+namespace SimpleHosting\Controller;
 
-USE SimpleHosting\Controller\Controller;
-USE SimpleHosting\Model\DREG\DREG;
+use SimpleHosting\Controller\Controller;
+use SimpleHosting\Model\DREG\DREG;
 
 /**
- * CLASS representing controller of main page of application.
+ * Class representing controller of main page of application.
  */
-CLASS HomePageController IMPLEMENTS Controller {
+class HomePageController implements Controller {
 
-    PUBLIC FUNCTION get(ARRAY $data): void{
-        $_TEMP =  ARRAY();
+    public function get(array $data): void{
+        $_TEMP =  array();
         $_TEMP["tlds"] = $this->getTLDs();
 
     }
 
-    PUBLIC FUNCTION post(ARRAY $data): void{
+    public function post(array $data): void{
     }
 
     /**
-     * Gets top level domains AS strings.
-     * @RETURN ARRAY ARRAY with top level domains AS strings.
+     * Gets top level domains as strings.
+     * @return array Array with top level domains as strings.
      */
-    PRIVATE FUNCTION getTLDs(): ARRAY{
-        $reti = ARRAY();
+    private function getTLDs(): array{
+        $reti = array();
         $tlds = DREG::getTLDs();
-        FOREACH($tlds AS $tld){
+        foreach($tlds as $tld){
             array_push($reti, "." . $tld->getName());
         }
-        RETURN $reti;
+        return $reti;
     }
 }
 

@@ -2,67 +2,67 @@
 
 //
 // DREG.PHP
-// File containing definition of API methods FOR DREG (domain registry).
+// File containing definition of API methods for DREG (domain registry).
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Model\DREG;
+namespace SimpleHosting\Model\DREG;
 
 
-USE SimpleHosting\Model\DREG\Services\TLDService;
-USE SimpleHosting\Model\DREG\Services\DomainService;
+use SimpleHosting\Model\DREG\Services\TLDService;
+use SimpleHosting\Model\DREG\Services\DomainService;
 
 /**
- * CLASS containing API methods FOR DREG (domain registry).
+ * Class containing API methods for DREG (domain registry).
  */
-CLASS DREG{
+class DREG{
 
     /**
      * Gets all available TLDs from domain registry.
-     * @RETURN ARRAY ARRAY with all available TLDs.
+     * @return array Array with all available TLDs.
      */
-    PUBLIC STATIC FUNCTION getTLDs(): ARRAY{
-        RETURN TLDService::read();
+    public static function getTLDs(): array{
+        return TLDService::read();
     }
 
     /**
-     * Checks, IF domain is free.
+     * Checks, if domain is free.
      * @param string $tld TLD name.
      * @param string $domain Domain name.
-     * @RETURN bool TRUE IF domain is free,
+     * @return bool TRUE if domain is free,
      *              FALSE otherwise.
      */
-    PUBLIC STATIC FUNCTION isDomainFree(string $domain, string $tld): bool{
+    public static function isDomainFree(string $domain, string $tld): bool{
         $reti = true;
         $dataTLD = TLDService::readByName($tld);
-        IF ($dataTLD != NULL){
+        if ($dataTLD != NULL){
             $reti = (DomainService::readByName($domain, $dataTLD) == NULL);
         }
-        ELSE
+        else
         {
             $reti = false;
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
-     * Creates NEW domain.
+     * Creates new domain.
      * @param string $domain Domain name.
      * @param string $tld TLD name.
-     * @RETURN ?Domain Newly created domain,
-     *                 OR NULL IF domain cannot be created.
+     * @return ?Domain Newly created domain,
+     *                 or NULL if domain cannot be created.
      */
-    PUBLIC STATIC FUNCTION createDomain(string $domain, string $tld): ?Domain{
+    public static function createDomain(string $domain, string $tld): ?Domain{
         $reti = NULL;
         $dataTLD = TLDService::readByName($tld);
-        IF ($dataTLD != NULL){
+        if ($dataTLD != NULL){
             $reti = DomainService::create($domain, $dataTLD);
         }
-        RETURN $reti;
+        return $reti;
     }
 }
 

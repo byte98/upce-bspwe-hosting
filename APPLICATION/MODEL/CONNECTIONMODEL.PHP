@@ -6,48 +6,48 @@
 // to the database.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Model;
+namespace SimpleHosting\Model;
 
 /**
- * Utility CLASS to store information about
+ * Utility class to store information about
  * connection to the database.
  */
-CLASS ConnectionModel{
+class ConnectionModel{
 
     /**
-     * Address OR hostname of database.
+     * Address or hostname of database.
      */
-    PRIVATE string $host;
+    private string $host;
 
     /**
      * Name of database.
      */
-    PRIVATE string $database;
+    private string $database;
 
     /**
      * Name of user with access to database.
      */
-    PRIVATE string $username;
+    private string $username;
 
 
     /**
      * Password of user with access to database.
      */
-    PRIVATE string $password;
+    private string $password;
 
     /**
-     * Creates NEW model of connection to the database.
-     * @param string $host Address OR hostname of database.
+     * Creates new model of connection to the database.
+     * @param string $host Address or hostname of database.
      * @param string $database Name of database.
      * @param string $username Name of user with access to database.
      * @param string $password Password of user with access to database.
      */
-    PUBLIC FUNCTION __construct(string $host, string $database, string $username, string $password){
+    public function __construct(string $host, string $database, string $username, string $password){
         $this->host = $host;
         $this->database = $database;
         $this->username = $username;
@@ -55,35 +55,35 @@ CLASS ConnectionModel{
     }
 
     /**
-     * Gets address OR hostname of database.
-     * @RETURN string Address OR hostname of database.
+     * Gets address or hostname of database.
+     * @return string Address or hostname of database.
      */
-    PUBLIC FUNCTION getHost(): string{
-        RETURN $this->host;
+    public function getHost(): string{
+        return $this->host;
     }
 
     /**
      * Gets name of database.
-     * @RETURN string Name of database.
+     * @return string Name of database.
      */
-    PUBLIC FUNCTION getDatabase(): string{
-        RETURN $this->database;
+    public function getDatabase(): string{
+        return $this->database;
     }
 
     /**
      * Gets name of user with access to database.
-     * @RETURN string Name of user with access to database.
+     * @return string Name of user with access to database.
      */
-    PUBLIC FUNCTION getUsername(): string{
-        RETURN $this->username;
+    public function getUsername(): string{
+        return $this->username;
     }
 
     /**
      * Gets password of user with access to database.
-     * @RETURN string Password of user with access to database.
+     * @return string Password of user with access to database.
      */
-    PUBLIC FUNCTION getPassword(): string{
-        RETURN $this->password;
+    public function getPassword(): string{
+        return $this->password;
     }
 }
 

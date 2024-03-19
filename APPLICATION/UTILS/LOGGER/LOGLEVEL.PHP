@@ -5,15 +5,15 @@
 // File containing all available levels of logs.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
 
-NAMESPACE SimpleHosting\Utils\Logger;
+namespace SimpleHosting\Utils\Logger;
 
-USE SimpleHosting\Utils\StringUtils;
+use SimpleHosting\Utils\StringUtils;
 
 /**
  * Enumeration of all available log levels.
@@ -23,61 +23,61 @@ enum LogLevel{
     /**
      * Lowest level of log.
      */
-    CASE Low;
+    case Low;
 
     /**
      * Base level of log.
      */
-    CASE Base;
+    case Base;
 
     /**
      * Log providing some important information.
      */
-    CASE Info;
+    case Info;
 
     /**
      * Log warning about something.
      */
-    CASE Warning;
+    case Warning;
 
     /**
      * Log informing about error.
      */
-    CASE Error;
+    case Error;
 
     /**
      * Gets string representation of log level.
-     * @RETURN string String representing log level.
+     * @return string String representing log level.
      */
-    PUBLIC FUNCTION toString(): string{
+    public function toString(): string{
         $reti = "";
-        SWITCH($this){
-            CASE LogLevel::Low:     $reti = "LOW";     BREAK;
-            CASE LogLevel::Base:    $reti = "BASE";    BREAK;
-            CASE LogLevel::Info:    $reti = "INFO";    BREAK;
-            CASE LogLevel::Warning: $reti = "WARNING"; BREAK;
-            CASE LogLevel::Error:   $reti = "ERROR";   BREAK;  
+        switch($this){
+            case LogLevel::Low:     $reti = "LOW";     break;
+            case LogLevel::Base:    $reti = "BASE";    break;
+            case LogLevel::Info:    $reti = "INFO";    break;
+            case LogLevel::Warning: $reti = "WARNING"; break;
+            case LogLevel::Error:   $reti = "ERROR";   break;  
         }
-        RETURN $reti;
+        return $reti;
     }
 
 
     /**
      * Gets log level from string.
      * @param string $str String representation of log level.
-     * @RETURN ?LogLevel Log level from its string representation,
-     *                   OR NULL IF log level cannot be determined.
+     * @return ?LogLevel Log level from its string representation,
+     *                   or NULL if log level cannot be determined.
      */
-    PUBLIC STATIC FUNCTION fromString(string $str): ?LogLevel{
+    public static function fromString(string $str): ?LogLevel{
         $reti = NULL;
-        SWITCH(strtoupper(StringUtils::trim($str))){
-            CASE "LOW":     $reti = LogLevel::Low;     BREAK;
-            CASE "BASE":    $reti = LogLevel::Base;    BREAK;
-            CASE "INFO":    $reti = LogLevel::Info;    BREAK;
-            CASE "WARNING": $reti = LogLevel::Warning; BREAK;
-            CASE "ERROR":   $reti = LogLevel::Error;   BREAK;
+        switch(strtoupper(StringUtils::trim($str))){
+            case "LOW":     $reti = LogLevel::Low;     break;
+            case "BASE":    $reti = LogLevel::Base;    break;
+            case "INFO":    $reti = LogLevel::Info;    break;
+            case "WARNING": $reti = LogLevel::Warning; break;
+            case "ERROR":   $reti = LogLevel::Error;   break;
         }
-        RETURN $reti;
+        return $reti;
     }
 }
 

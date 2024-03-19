@@ -4,29 +4,29 @@
 // File defining all other controllers of the application.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Controller;
+namespace SimpleHosting\Controller;
 
 /**
- * INTERFACE abstracting all controllers of the application.
+ * Interface abstracting all controllers of the application.
  */
-INTERFACE Controller{
+interface Controller{
 
     /**
      * Handles HTTP get request.
-     * @param ARRAY $data Data of request.
+     * @param array $data Data of request.
      */
-    PUBLIC FUNCTION get(ARRAY $data): void;
+    public function get(array $data): void;
 
     /**
      * Handles HTTP post request.
-     * @param ARRAY $data Data of request.
+     * @param array $data Data of request.
      */
-    PUBLIC FUNCTION post(ARRAY $data): void;
+    public function post(array $data): void;
 }
 
 ?>

@@ -2,47 +2,47 @@
 
 // 
 // APPLICATION.PHP
-// File containing definition of application CLASS.
+// File containing definition of application class.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting;
+namespace SimpleHosting;
 
-USE SimpleHosting\Model\DatabaseFactory;
-USE SimpleHosting\Router\Router;
-USE SimpleHosting\Router\RoutingTable;
-USE SimpleHosting\Utils\Logger\Logger;
+use SimpleHosting\Model\DatabaseFactory;
+use SimpleHosting\Router\Router;
+use SimpleHosting\Router\RoutingTable;
+use SimpleHosting\Utils\Logger\Logger;
 
 /**
- * CLASS which represents application itself.
+ * Class which represents application itself.
  */
-CLASS Application{
+class Application{
 
     /**
      * Path to file with configuration.
      */
-    PRIVATE readonly string $cFile;
+    private readonly string $cFile;
 
     /**
      * Router of the application.
      */
-    PRIVATE Router $router;
+    private Router $router;
 
     /**
      * Logger of application.
      */
-    PRIVATE STATIC ?Logger $logger = null;
+    private static ?Logger $logger = null;
 
     /**
-     * Creates NEW instance of application.
+     * Creates new instance of application.
      * @param string $configFile Path to YAML file containing 
      *                           configuration of application.
      */
-    PUBLIC FUNCTION __construct(string $configFile){
+    public function __construct(string $configFile){
         $this->cFile = $configFile;
         $this->init();
     }
@@ -50,58 +50,58 @@ CLASS Application{
     /**
      * Initializes application.
      */
-    PRIVATE FUNCTION init(): void{
+    private function init(): void{
 
-        // Register CLASS auto-loading
-        spl_autoload_register(FUNCTION($className){
+        // Register class auto-loading
+        spl_autoload_register(function($className){
            $path = Application::determineClassPath($className);
-           IF(file_exists($path)){
-               REQUIRE_ONCE($path);
+           if(file_exists($path)){
+               require_once($path);
            } 
         });
 
         // Load configuration
-        $config = NEW Configuration($this->cFile);
-        Application::$logger = NEW Logger($config->getLoggerSettings());
+        $config = new Configuration($this->cFile);
+        Application::$logger = new Logger($config->getLoggerSettings());
         DatabaseFactory::setModel($config->getConnection());
-        IF ($config->getPHPErrors() == true){
+        if ($config->getPHPErrors() == true){
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
         }
 
         // Initialize router
-        $this->router = NEW Router();
-        $routingTable = NEW RoutingTable($config->getRoutes());
+        $this->router = new Router();
+        $routingTable = new RoutingTable($config->getRoutes());
         $routingTable->fillRouter($this->router);
     }
 
     /**
-     * Determines path to file with definition of CLASS from
+     * Determines path to file with definition of class from
      * its name.
-     * @param string $className Fully qualified name of CLASS.
-     * @RETURN string Path to file with definition of CLASS.
+     * @param string $className Fully qualified name of class.
+     * @return string Path to file with definition of class.
      */
-    PRIVATE STATIC FUNCTION determineClassPath(string $className): string{
+    private static function determineClassPath(string $className): string{
         $reti = "";
         $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $className);
         $rootPath = $_SERVER["DOCUMENT_ROOT"] . "/APPLICATION";
         $reti = $rootPath . DIRECTORY_SEPARATOR . strtoupper($classPath) . ".PHP";
         $reti = str_replace("SIMPLEHOSTING/", "", $reti);
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Gets logger of whole application.
-     * @RETURN Logger Logger of whole application.
+     * @return Logger Logger of whole application.
      */
-    PUBLIC STATIC FUNCTION logger(): Logger{
+    public static function logger(): Logger{
         $reti = Application::$logger;
-        IF ($reti == null){
+        if ($reti == null){
             Application::$logger = Logger::none();
             $reti = Application::$logger;
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
@@ -109,12 +109,12 @@ CLASS Application{
      * @param string $viewName Name of view file.
      * @example Application::getView("homepage");
      */
-    PUBLIC STATIC FUNCTION getView(string $viewName){
+    public static function getView(string $viewName){
         $path = $_SERVER["DOCUMENT_ROOT"] . "/APPLICATION/VIEW/" . $viewName . ".PHTML";
-        IF (file_exists($path)){
-            INCLUDE $path;
+        if (file_exists($path)){
+            include $path;
         }
-        ELSE{
+        else{
             Application::logger()->warning("Cannot get view '" . $viewName . "': file does not exists!");
         }
     }
@@ -122,29 +122,29 @@ CLASS Application{
     /**
      * Runs application.
      */
-    PUBLIC FUNCTION run(): void{
+    public function run(): void{
         $url = $_SERVER["REQUEST_URI"];
         $method = strtoupper($_SERVER["REQUEST_METHOD"]);
         Application::logger()->low("Incoming request [" . $method . "] " . $url);
         $route = $this->router->route($url);
-        IF ($route != null){
+        if ($route != null){
             Application::logger()->base("Giving control to '" . get_class($route->getTarget()) . "'");
             $data = $route->getData($url);
-            SWITCH($method){
-                CASE "GET": $route->getTarget()->get($data); BREAK;
-                CASE "POST": $route->getTarget()->post($data); BREAK;
+            switch($method){
+                case "GET": $route->getTarget()->get($data); break;
+                case "POST": $route->getTarget()->post($data); break;
             }
         }
-        ELSE{
-            Application::logger()->warning("Cannot find controller FOR path '" . $url . "'");
+        else{
+            Application::logger()->warning("Cannot find controller for path '" . $url . "'");
         }
     }
 
     /**
-     * Main FUNCTION of whole application. This FUNCTION
+     * Main function of whole application. This function
      * will be called after start of application.
      */
-    PUBLIC STATIC FUNCTION main(): void{
+    public static function main(): void{
         
         // Path to file with debug configuration
         $config = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "DEBUG.YML";
@@ -153,7 +153,7 @@ CLASS Application{
         //$config = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . "CONFIG.YML";
 
         
-        $app = NEW \SimpleHosting\Application($config);
+        $app = new \SimpleHosting\Application($config);
         $app->run();
         DatabaseFactory::close();
     }

@@ -5,139 +5,139 @@
 // File containing some utilitites to work with route paths.
 //
 // Author: Jiri Skoda<jiri.skoda@student.upce.cz>
-//         Faculty of Electrical Engineering AND Informatics
+//         Faculty of Electrical Engineering and Informatics
 //         University of Pardubice
 //         2024, Pardubice
 //
 
-NAMESPACE SimpleHosting\Utils;
+namespace SimpleHosting\Utils;
 
 
-USE SimpleHosting\Router\PlaceholderType;
+use SimpleHosting\Router\PlaceholderType;
 
 /**
- * CLASS which contains some utilities to work with route paths.
+ * Class which contains some utilities to work with route paths.
  */
-CLASS PathUtils{
+class PathUtils{
 
     /**
      * Gets name of place holder from part of path.
      * @param string $pathPart Part of path.
-     * @RETURN string | false Name of place holder,
-     *                        OR FALSE IF part contains no placeholder.
+     * @return string | false Name of place holder,
+     *                        or FALSE if part contains no placeholder.
      */
-    PUBLIC STATIC FUNCTION getPlaceholderName(string $pathPart): string | false{
+    public static function getPlaceholderName(string $pathPart): string | false{
         $reti = false;
-        IF (PathUtils::isPlaceholder($pathPart)) {
+        if (PathUtils::isPlaceholder($pathPart)) {
             $colon_position = strpos($pathPart, ':');
             $reti = substr($pathPart, 1, $colon_position - 1);
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Gets data type of placeholder from part of path.
      * @param string $pathPart Part of path.
-     * @RETURN PlaceholderType | false Data type of placeholder,
-     *                                OR FALSE IF part contains no placeholder
-     *                                OR IF data type is invalid.
+     * @return PlaceholderType | false Data type of placeholder,
+     *                                or FALSE if part contains no placeholder
+     *                                or if data type is invalid.
      */
-    PUBLIC STATIC FUNCTION getPlaceholderType(string $pathPart): false | PlaceholderType{
+    public static function getPlaceholderType(string $pathPart): false | PlaceholderType{
         $reti = false;
-        IF (PathUtils::isPlaceholder($pathPart)) { 
+        if (PathUtils::isPlaceholder($pathPart)) { 
             $colon_position = strpos($pathPart, ':');
             $type = substr($pathPart, $colon_position + 2, -1);
-            IF ($type == "number"){
+            if ($type == "number"){
                 $reti = PlaceholderType::Number;
             }
-            ELSE IF ($type == "text"){
+            else if ($type == "text"){
                 $reti = PlaceholderType::Text;
             }
-            ELSE IF ($type == "bool"){
+            else if ($type == "bool"){
                 $reti = PlaceholderType::Boolean;
             }
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Checks, whether part of path contains placeholder.
      * @param string $pathPart Part of path which will be checked.
-     * @RETURN bool TRUE IF part of path contains placeholder,
+     * @return bool TRUE if part of path contains placeholder,
      *              FALSE otherwise.
      */
-    PUBLIC STATIC FUNCTION isPlaceholder(string $pathPart): bool{
+    public static function isPlaceholder(string $pathPart): bool{
         $reti = false;
-        // Check IF the part starts with '{' AND ends with '}'
-        IF ($pathPart[0] === '{' && substr($pathPart, -1) === '}') {
+        // Check if the part starts with '{' and ends with '}'
+        if ($pathPart[0] === '{' && substr($pathPart, -1) === '}') {
             // Find the position of ':'
             $colon_position = strpos($pathPart, ':');
             
-            // Check IF ':' exists AND IF it's not at the beginning OR end
-            IF ($colon_position !== false && $colon_position > 1 && $colon_position < strlen($pathPart) - 2) {
+            // Check if ':' exists and if it's not at the beginning or end
+            if ($colon_position !== false && $colon_position > 1 && $colon_position < strlen($pathPart) - 2) {
                 $reti =  true; // Format is correct
             }
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Gets values from request.
      * @param string $route Original route.
      * @param string $request Requested url.
-     * @RETURN ARRAY ARRAY with values from request.
+     * @return array Array with values from request.
      */
-    PUBLIC STATIC FUNCTION getValues(string $route, string $request): ARRAY{
+    public static function getValues(string $route, string $request): array{
         $parts = explode('/', $route);
         $data = explode('/', $request);
-        $reti = ARRAY();
-        FOR( $i = 0; $i < count($parts); $i++ ){
-            IF (PathUtils::isPlaceholder( $parts[$i] )) {
+        $reti = array();
+        for( $i = 0; $i < count($parts); $i++ ){
+            if (PathUtils::isPlaceholder( $parts[$i] )) {
                 $name = PathUtils::getPlaceholderName( $parts[$i] );
                 $value = null;
-                IF (count($data) > $i){
+                if (count($data) > $i){
                     $value = PathUtils::parseValue( $data[$i], PathUtils::getPlaceholderType( $parts[$i] ) );
                 }
                 $reti[$name] = $value;
             }
         }
-        RETURN $reti;
+        return $reti;
     }
 
     /**
      * Parses value from raw data to requested data type.
      * @param string $rawData Raw data which will be parsed.
      * @param PlaceholderType $requestedType Requested data type.
-     * @RETURN string | int | float | bool | null Parsed value,
-     *                                            OR NULL IF data cannot be parsed.
+     * @return string | int | float | bool | null Parsed value,
+     *                                            or NULL if data cannot be parsed.
      */
-    PRIVATE STATIC FUNCTION parseValue(string $rawData, PlaceholderType $requestedType): string | int | float | bool | null{
+    private static function parseValue(string $rawData, PlaceholderType $requestedType): string | int | float | bool | null{
         $reti = null;
-        IF ($requestedType == PlaceholderType::Number && is_numeric($rawData)){
+        if ($requestedType == PlaceholderType::Number && is_numeric($rawData)){
             $floatval = floatval($rawData);
-            IF (is_nan($floatval)){
+            if (is_nan($floatval)){
                 $intval = intval($rawData);
-                IF ($intval !== 0 || $rawData === '0'){
+                if ($intval !== 0 || $rawData === '0'){
                     $reti = $intval;
                 }
             }
-            ELSE{
+            else{
                 $reti = $floatval;
             }
         }
-        ELSE IF ($requestedType == PlaceholderType::Boolean){
+        else if ($requestedType == PlaceholderType::Boolean){
             $value = strtolower(StringUtils::trim($rawData));
-            IF ($value == "true"){
+            if ($value == "true"){
                 $reti = true;
             }
-            ELSE IF ($value == "false"){
+            else if ($value == "false"){
                 $reti = false;
             }
         }
-        ELSE IF ($requestedType == PlaceholderType::Text){
+        else if ($requestedType == PlaceholderType::Text){
             $reti = $rawData;
         }
-        RETURN $reti;
+        return $reti;
     }
 }
 
