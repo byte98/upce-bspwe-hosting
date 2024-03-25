@@ -6,7 +6,7 @@ Installation is pretty straight-forward. Just follow next steps.
 
 ### 1. Prerequisities
 Before starting installation process, there are some steps needed to do.
-1. Make sure that you have prepared server with Fedora Server running (all files can be downladed [here](https://fedoraproject.org/server/download]) ).
+1. Make sure that you have prepared server with Fedora Server running (all files can be downloaded [here](https://fedoraproject.org/server/download]) ).
 2. Be sure to have created SSH key on your system and uploaded to the server.
     > If you don't have created SSH key on your system, it can be done with following commands:
     >```
@@ -22,7 +22,7 @@ Before starting installation process, there are some steps needed to do.
 This application comes with quite helpful installer. Installer can be downloaded here:
 > [Simple Hosting installer](https://github.com/byte98/upce-bspwe-hosting-installer/releases/latest/download/sh_installer.zip)
 
-Unzip downloaded file and then continue. There are seweral ways how to run installer.
+Unzip downloaded file and then continue. There are several ways how to run installer.
 
 - **Windows**
     1. Locate the file **install.ps1**
